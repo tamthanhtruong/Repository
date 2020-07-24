@@ -2,17 +2,16 @@ import {
   Body,
   Controller,
   Delete,
-  Get, HttpException, HttpStatus,
+  Get, HttpException, HttpStatus, Param,
   Patch,
   Post,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import {
   ProductCreateRequest, ProductDeleteRequest,
-  ProductGetSingleRequest,
   ProductUpdateRequest,
-} from '../interface/product/product.request';
-import { ProductResponseInterface } from '../interface/product/product.response';
+} from '../../interface/product/product.request';
+import { ProductResponseInterface } from '../../interface/product/product.response';
 import { ProductInterface } from './product.model';
 
 @Controller('product')
@@ -21,11 +20,11 @@ export class ProductController {
 
   @Post()
   async create( @Body() req: ProductCreateRequest): Promise<ProductResponseInterface> {
-    try {
-      return await this.productService.create(req.categoryId, req.name, req.code, req.originPrice, req.price, req.image, req.information, req.evaluation);
-    } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    }
+    // try {
+      return await this.productService.create(req.categoryId, req.unitProductId, req.name, req.code, req.originPrice, req.price, req.image, req.information, req.evaluation);
+    // } catch(e) {
+    //   throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    // }
   }
 
   @Get()
@@ -38,18 +37,18 @@ export class ProductController {
   }
 
   @Get(':id')
-  async getSingle(@Body() req: ProductGetSingleRequest): Promise<ProductResponseInterface> {
+  async getSingle(@Param('id') id: string): Promise<ProductResponseInterface> {
     try {
-      return await this.productService.getSingle(req.id);
+      return await this.productService.getSingle(id);
     } catch(e) {
-      throw new HttpException(`Not found productId ${req.id}`, HttpStatus.NOT_FOUND);
+      throw new HttpException(`Not found productId ${id}`, HttpStatus.NOT_FOUND);
     }
   }
 
   @Patch(':id')
   async update(@Body() req: ProductUpdateRequest): Promise<ProductResponseInterface> {
     try {
-      return await this.productService.update(req.id, req.originPrice, req.price, req.image, req.information, req.evaluation);
+      return await this.productService.update(req.id, req.categoryId, req.unitProductId, req.originPrice, req.price, req.image, req.information, req.evaluation);
     } catch(e) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }

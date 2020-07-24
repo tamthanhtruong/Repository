@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestj
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CategoryInterface } from './category.model';
-import { CategoryResponseInterface } from '../../interface/product/category/category.response';
+import { CategoryResponseInterface } from '../../../interface/product/category/category.response';
 
 @Injectable()
 export class CategoryService {

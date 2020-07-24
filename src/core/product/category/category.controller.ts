@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { CategoryCreateRequest, CategoryUpdateRequest } from '../../interface/product/category/category.request';
+import { CategoryCreateRequest, CategoryUpdateRequest } from '../../../interface/product/category/category.request';
 import { CategoryInterface } from './category.model';
-import { CategoryResponseInterface } from '../../interface/product/category/category.response';
+import { CategoryResponseInterface } from '../../../interface/product/category/category.response';
 
 @Controller('category')
 export class CategoryController {

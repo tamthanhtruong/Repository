@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import { ProductTypeEnum } from '../enum';
+import { ProductTypeEnum } from '../../enum';
 
 // Khai báo data cho mongoose
 export const ProductSchema = new mongoose.Schema({
@@ -10,7 +10,11 @@ export const ProductSchema = new mongoose.Schema({
     trim: String,
   } ,
   // category: String,
-  unitProduct: String,
+  unitProductId: {
+    type: String,
+    required: true,
+    trim: String,
+  },
   name: String,
   code: String,
   originPrice: Number,
