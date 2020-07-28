@@ -86,14 +86,9 @@ export class ImportService {
     findImport.deletedAt = Date.now();
     await findImport.save();
     return true;
-  }  /* Additional functions */
+  }
 
-
-  // async getDetail(importId: string) {
-  //   const doc = this.findId(importId);
-  //   // return await this.detailImportService.getArray(importId);
-  // }
-
+  /* Additional functions */
   async findId(id: string): Promise<ImportResponseInterface> {
     // Find Import document by id
     const importInfo = await this.model.findById(id);

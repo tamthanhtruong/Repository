@@ -53,9 +53,4 @@ export class ImportController {
   async delete(@Param('id') id: string): Promise<boolean> {
     return await this.service.delete(id);
   }
-
-  // @Get('getDetail/:importId')
-  // async getDeatail(@Param('importId') importId: string) {
-  //   return await this.service.getDetail(importId);
-  // }
 }
