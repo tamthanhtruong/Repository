@@ -1,5 +1,5 @@
-export class DetailImportCreateRequest {
-  importId: string;
+export interface DetailExportResponseInterface {
+  exportId: string;
   productId: string;
   unitProductId: string;
   quantity: number;

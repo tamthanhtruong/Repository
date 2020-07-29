@@ -97,7 +97,7 @@ export class ExportService {
   async findId(id: string): Promise<ExportResponseInterface> {
     // Find Export document by id
     const exportInfo = await this.model.findById(id);
-    if(!exportInfo) throw new NotFoundException(`exportInfo [${id}] not exist.`);
+    if(!exportInfo) throw new NotFoundException(`exportId [${id}] not exist.`);
 
     return exportInfo;
   }
