@@ -37,8 +37,8 @@ export class UserController {
   }
 
   @Patch(':id')
-  async update(@Body() req: UserUpdateRequest): Promise<UserResponseInterface> {
-    return await this.userService.update( req.id,
+  async update(@Param('id') id: string, @Body() req: UserUpdateRequest): Promise<UserResponseInterface> {
+    return await this.userService.update( id,
                                           req.roleId,
                                           req.account,
                                           req.password,

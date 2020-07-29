@@ -28,8 +28,8 @@ export class RoleController {
   }
 
   @Patch(':id')
-  async update(@Body() req: RoleUpdateRequest ): Promise<RoleResponseInterface> {
-    return await this.service.update(req.id, req.name, req.description, req.status);
+  async update(@Param('id') id: string, @Body() req: RoleUpdateRequest ): Promise<RoleResponseInterface> {
+    return await this.service.update(id, req.name, req.description, req.status);
   }
 
   @Delete(':id')

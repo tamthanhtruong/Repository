@@ -36,8 +36,8 @@ export class ImportController {
   }
 
   @Patch(':id')
-  async update(@Body() req: ImportUpdateRequest): Promise<ImportResponseInterface> {
-    return await this.service.update( req.id,
+  async update(@Param('id') id: string, @Body() req: ImportUpdateRequest) {
+    return await this.service.update( id,
                                       req.shipper,
                                       req.invoiceNumber,
                                       req.note,

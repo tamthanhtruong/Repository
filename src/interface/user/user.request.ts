@@ -12,7 +12,6 @@ export class UserCreateRequest {
 }
 
 export class UserUpdateRequest {
-  id: string;
   roleId: string;
   account: string;
   password: string;

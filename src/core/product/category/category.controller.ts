@@ -28,8 +28,8 @@ export class CategoryController {
   }
 
   @Patch(':id')
-  async update(@Body() req: CategoryUpdateRequest): Promise<CategoryResponseInterface> {
-    return await this.service.update(req.id, req.name, req.status);
+  async update(@Param('id') id: string, @Body() req: CategoryUpdateRequest): Promise<CategoryResponseInterface> {
+    return await this.service.update(id, req.name, req.status);
   }
 
   @Delete(':id')

@@ -4,7 +4,6 @@ export class CategoryCreateRequest {
 }
 
 export class CategoryUpdateRequest {
-  id: string;
   name: string;
   status: string;
 }

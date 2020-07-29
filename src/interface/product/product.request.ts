@@ -12,7 +12,6 @@ export class ProductCreateRequest {
 }
 
 export class ProductUpdateRequest {
-  id: string;
   categoryId: string;
   unitProductId: string;
   originPrice: number;

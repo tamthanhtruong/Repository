@@ -5,7 +5,6 @@ export class RoleCreateRequest {
 }
 
 export class RoleUpdateRequest {
-  id: string;
   name: string;
   description: string;
   status: string;

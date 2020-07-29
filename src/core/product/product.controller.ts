@@ -44,8 +44,8 @@ export class ProductController {
   }
 
   @Patch(':id')
-  async update(@Body() req: ProductUpdateRequest): Promise<ProductResponseInterface> {
-      return await this.service.update( req.id,
+  async update(@Param('id') id: string, @Body() req: ProductUpdateRequest): Promise<ProductResponseInterface> {
+      return await this.service.update( id,
                                         req.categoryId,
                                         req.unitProductId,
                                         req.originPrice,
