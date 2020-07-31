@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from "mongoose";
 import { UserService } from '../user/user.service';
@@ -10,6 +10,22 @@ export class ExportService {
   constructor(@InjectModel('exports') private readonly model: Model<ExportInterface>,
               private readonly userService: UserService) {}
 
+  /* Additional functions */
+  async findExport(id: string): Promise<ExportInterface> {
+    let exportDoc;
+    try {
+      // Find Export document by id
+      exportDoc = await this.model.findById(id).exec();
+    } catch(error) {
+      throw new NotFoundException('Could not find export.'); // 404
+    }
+    if(!exportDoc) {
+      throw new NotFoundException('Could not find export.'); // 404
+    }
+    return exportDoc;
+  }
+
+  /* Main function */
   async create( receiverId: string,
                 invoiceNumber: number,
                 note: string,
@@ -21,13 +37,13 @@ export class ExportService {
                 status: string) {
 
     // Check receiver is existing
-    await this.userService.findId(receiverId);
+    await this.userService.findUser(receiverId);
     // Check createdUser is existing
-    await this.userService.findId(createdUserId);
+    await this.userService.findUser(createdUserId);
     // Check accountantUser is existing
-    await this.userService.findId(accountantUserId);
+    await this.userService.findUser(accountantUserId);
     // Check stockkeeperUser is existing
-    await this.userService.findId(stockkeeperUserId);
+    await this.userService.findUser(stockkeeperUserId);
     // Create new import document
     const newExport = new this.model({receiverId,invoiceNumber,note,createdUserId,accountantUserId,accConfirmedDate,stockkeeperUserId,stockConfirmedDate,status});
     return await newExport.save();
@@ -40,9 +56,7 @@ export class ExportService {
 
   async getSingle(id: string): Promise<ExportResponseInterface> {
     // Finds a single document by id
-    const exportInfo = await this.model.findById(id);
-    if(!exportInfo) throw new HttpException(`Not found exportId ${id}`, HttpStatus.NOT_FOUND);
-    return exportInfo;
+    return await this.findExport(id);
   }
 
   async update(  id: string,
@@ -57,49 +71,37 @@ export class ExportService {
                  status: string ): Promise<ExportResponseInterface> {
 
     // Find export document by id
-    const findExport = await this.model.findById(id);
-    if (!findExport) throw new HttpException(`Not found findExport ${id}`, HttpStatus.NOT_FOUND);
+    const exportDoc = await this.findExport(id);
     // Check receiver is existing
-    await this.userService.findId(receiverId);
+    await this.userService.findUser(receiverId);
     // Check createdUser is existing
-    await this.userService.findId(createdUserId);
+    await this.userService.findUser(createdUserId);
     // Check accountantUser is existing
-    await this.userService.findId(accountantUserId);
+    await this.userService.findUser(accountantUserId);
     // Check stockkeeperUser is existing
-    await this.userService.findId(stockkeeperUserId);
+    await this.userService.findUser(stockkeeperUserId);
 
     // Then update
-    findExport.receiverId = receiverId;
-    findExport.invoiceNumber = invoiceNumber;
-    findExport.note = note;
-    findExport.createdUserId = createdUserId;
-    findExport.accountantUserId = accountantUserId;
-    findExport.accConfirmedDate = accConfirmedDate;
-    findExport.stockkeeperUserId = stockkeeperUserId;
-    findExport.stockConfirmedDate = stockConfirmedDate;
-    findExport.status = status;
-    findExport.updatedAt = Date.now();
+    exportDoc.receiverId = receiverId;
+    exportDoc.invoiceNumber = invoiceNumber;
+    exportDoc.note = note;
+    exportDoc.createdUserId = createdUserId;
+    exportDoc.accountantUserId = accountantUserId;
+    exportDoc.accConfirmedDate = accConfirmedDate;
+    exportDoc.stockkeeperUserId = stockkeeperUserId;
+    exportDoc.stockConfirmedDate = stockConfirmedDate;
+    exportDoc.status = status;
+    exportDoc.updatedAt = Date.now();
 
-    return await findExport.save();
+    return await exportDoc.save();
   }
 
   async delete(id: string): Promise<boolean> {
     // Find export document by id
-    const findExport =  await this.model.findById(id);
-    if (!findExport) throw new HttpException(`Not found findExport ${id}`, HttpStatus.NOT_FOUND);
+    const exportDoc =  await this.findExport(id);
     // Add deletedAt field
-    findExport.deletedAt = Date.now();
-    await findExport.save();
+    exportDoc.deletedAt = Date.now();
+    await exportDoc.save();
     return true;
   }
-
-  /* Additional functions */
-  async findId(id: string): Promise<ExportResponseInterface> {
-    // Find Export document by id
-    const exportInfo = await this.model.findById(id);
-    if(!exportInfo) throw new NotFoundException(`exportId [${id}] not exist.`);
-
-    return exportInfo;
-  }
-
 }

@@ -1,13 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get, HttpException, HttpStatus, Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ProductCreateRequest,ProductUpdateRequest } from '../../interface/product/product.request';
+import { ProductCreateRequest, ProductUpdateRequest } from '../../interface/product/product.request';
 import { ProductResponseInterface } from '../../interface/product/product.response';
 import { ProductInterface } from './product.model';
 
@@ -36,11 +29,7 @@ export class ProductController {
 
   @Get(':id')
   async getSingle(@Param('id') id: string): Promise<ProductResponseInterface> {
-    try {
       return await this.service.getSingle(id);
-    } catch(e) {
-      throw new HttpException(`Not found productId ${id}`, HttpStatus.NOT_FOUND);
-    }
   }
 
   @Patch(':id')

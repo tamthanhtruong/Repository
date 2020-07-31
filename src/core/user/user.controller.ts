@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserCreateRequest, UserUpdateRequest } from '../../interface/user/user.request';
 import { UserResponseInterface } from '../../interface/user/user.response';
@@ -29,11 +29,7 @@ export class UserController {
 
   @Get(':id')
   async getSingle(@Param('id') id: string): Promise<UserResponseInterface> {
-    try {
       return await this.userService.getSingle(id);
-    } catch(e) {
-      throw new HttpException(`Not found userId ${id}`, HttpStatus.NOT_FOUND);
-    }
   }
 
   @Patch(':id')

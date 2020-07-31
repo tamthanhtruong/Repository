@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { RoleCreateRequest, RoleUpdateRequest } from '../../../interface/user/role/role.request';
 import { RoleService } from './role.service';
 import { RoleResponseInterface } from '../../../interface/user/role/role.response';
@@ -20,11 +20,7 @@ export class RoleController {
 
   @Get(':id')
   async getSingle(@Param('id') id: string): Promise<RoleResponseInterface> {
-    try{
       return await this.service.getSingle(id);
-    }catch(e) {
-      throw new HttpException(`Not found roleId ${id}`, HttpStatus.NOT_FOUND);
-    }
   }
 
   @Patch(':id')

@@ -1,6 +1,6 @@
 import { UserInterface } from './user.model';
 import { Model } from 'mongoose';
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { RoleService } from './role/role.service';
 import { UserResponseInterface } from '../../interface/user/user.response';
@@ -10,9 +10,25 @@ export class UserService {
   constructor(@InjectModel('users') private readonly model: Model<UserInterface>,
               private readonly roleService: RoleService) {}
 
+  /* Additional functions */
+  async findUser(id: string): Promise<UserInterface> {
+    let userDoc;
+    try {
+      // Find User document by id
+      userDoc = await this.model.findById(id).exec();
+    } catch(error) {
+      throw new NotFoundException('Could not find user.'); // 404
+    }
+    if(!userDoc) {
+      throw new NotFoundException('Could not find user.'); // 404
+    }
+    return userDoc;
+  }
+
+  /* Main function */
   async create(roleId, account, password, name, sex, email, dateOfBirth, address, phone, status): Promise<UserResponseInterface> {
     // Check roleId is existing
-    await this.roleService.findId(roleId);
+    await this.roleService.findRole(roleId);
     // Create the new user
     const newUser = new this.model({roleId, account, password, name, sex, email, dateOfBirth, address, phone, status});
     return await newUser.save();
@@ -25,7 +41,7 @@ export class UserService {
 
   async getSingle(id: string): Promise<UserResponseInterface> {
     // Finds a single document by id
-    return this.model.findById(id);
+    return await this.findUser(id);
   }
 
   async update( id:string,
@@ -41,40 +57,29 @@ export class UserService {
                 status?:string): Promise<UserResponseInterface> {
 
     //Find user document by id
-    const findUser = await this.model.findById(id);
-    if(!findUser) throw new HttpException(`Not found userId ${id}`, HttpStatus.NOT_FOUND);
+    const user = await this.findUser(id);
     // Then update
-    findUser.roleId = roleId;
-    findUser.account = account;
-    findUser.password = password;
-    findUser.name = name;
-    findUser.sex = sex;
-    findUser.email = email;
-    findUser.dateOfBirth = dateOfBirth;
-    findUser.address = address;
-    findUser.phone = phone;
-    findUser.status = status;
-    findUser.updatedAt = Date.now();
+    user.roleId = roleId;
+    user.account = account;
+    user.password = password;
+    user.name = name;
+    user.sex = sex;
+    user.email = email;
+    user.dateOfBirth = dateOfBirth;
+    user.address = address;
+    user.phone = phone;
+    user.status = status;
+    user.updatedAt = Date.now();
 
-    return await findUser.save();
+    return await user.save();
   }
 
   async delete(id: string): Promise<boolean> {
     // Find user document by id
-    const findUser = await this.model.findById(id);
-    if(!findUser) throw new HttpException(`Not found userId ${id}`, HttpStatus.NOT_FOUND);
+    const user = await this.findUser(id);
     // Add deletedAt field
-    findUser.deletedAt = Date.now();
-    await findUser.save();
+    user.deletedAt = Date.now();
+    await user.save();
     return true;
-  }
-
-  /* Additional functions */
-  async findId(id: string): Promise<UserResponseInterface> {
-    // Find user document by id
-    const userInfo = await this.model.findById(id);
-    if(!userInfo) throw new NotFoundException(`userId [${id}] not exist.`);
-
-    return userInfo;
   }
 }

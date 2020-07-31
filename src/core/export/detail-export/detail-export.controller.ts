@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DetailExportInterface } from './detail-export.model';
 import { DetailExportCreateRequest } from '../../../interface/export/detail-export/detail-export.request';
 import { DetailExportResponseInterface } from '../../../interface/export/detail-export/detail-export.response';
@@ -21,11 +21,7 @@ export class DetailExportController {
 
   @Get(':id')
   async getSingle(@Param('id') id: string) {
-    try {
       return await this.service.getSingle(id);
-    } catch(e) {
-      throw new HttpException(`Not found detailExportId ${id}`, HttpStatus.NOT_FOUND);
-    }
   }
 
   @Delete(':id')
@@ -37,5 +33,4 @@ export class DetailExportController {
   async getDetail(@Param('exportId') exportId: string) {
     return await this.service.getDetail(exportId);
   }
-
 }

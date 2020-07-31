@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DetailInventoryInterface } from './detail-inventory.model';
 import { DetailInventoryCreateRequest } from '../../../interface/inventory/detail-inventory/detail-inventory.request';
 import { DetailInventoryResponseInterface } from '../../../interface/inventory/detail-inventory/detail-inventory.response';
@@ -21,11 +21,7 @@ export class DetailInventoryController {
 
   @Get(':id')
   async getSingle(@Param('id') id: string) {
-    try {
       return await this.service.getSingle(id);
-    } catch(e) {
-      throw new HttpException(`Not found detailInventoryId ${id}`, HttpStatus.NOT_FOUND);
-    }
   }
 
   @Delete(':id')

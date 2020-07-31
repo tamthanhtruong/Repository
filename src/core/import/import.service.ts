@@ -1,6 +1,6 @@
 import { ImportInterface } from './import.model';
 import { Model } from 'mongoose';
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserService } from '../user/user.service';
 import { ImportResponseInterface } from '../../interface/import/import.response';
@@ -10,6 +10,22 @@ export class ImportService {
   constructor(@InjectModel('imports') private readonly model: Model<ImportInterface>,
               private readonly userService: UserService) {}
 
+  /* Additional functions */
+  async findImport(id: string): Promise<ImportInterface> {
+    let importDoc;
+    try {
+      // Find Import document by id
+      importDoc = await this.model.findById(id).exec();
+    } catch(error) {
+      throw new NotFoundException('Could not find import.'); // 404
+    }
+    if(!importDoc) {
+      throw new NotFoundException('Could not find import.'); // 404
+    }
+    return importDoc;
+  }
+
+  /* Main function */
   async create( shipper: string,
                 invoiceNumber: number,
                 note: string,
@@ -21,11 +37,11 @@ export class ImportService {
                 status: string) {
 
     // Check createdUser is existing
-    await this.userService.findId(createdUserId);
+    await this.userService.findUser(createdUserId);
     // Check accountantUser is existing
-    await this.userService.findId(accountantUserId);
+    await this.userService.findUser(accountantUserId);
     // Check stockkeeperUser is existing
-    await this.userService.findId(stockkeeperUserId);
+    await this.userService.findUser(stockkeeperUserId);
     // Create new import document
     const newImport = new this.model({shipper,invoiceNumber,note,createdUserId,accountantUserId,accConfirmedDate,stockkeeperUserId,stockConfirmedDate,status});
     return await newImport.save();
@@ -37,9 +53,8 @@ export class ImportService {
   }
 
   async getSingle(id: string): Promise<ImportResponseInterface> {
-      const importInfo = await this.model.findById(id);
-      if(!importInfo) throw new HttpException(`Not found importId ${id}`, HttpStatus.NOT_FOUND);
-      return importInfo;
+    // Finds a single document by id
+    return await this.findImport(id);
   }
 
   async update(  id: string,
@@ -54,46 +69,36 @@ export class ImportService {
                  status: string ): Promise<ImportResponseInterface> {
 
     // Find import document by id
-    const findImport = await this.model.findById(id);
-    if (!findImport) throw new HttpException(`Not found findImport ${id}`, HttpStatus.NOT_FOUND);
+    const importDoc = await this.findImport(id);
     // Check createdUser is existing
-    await this.userService.findId(createdUserId);
+    await this.userService.findUser(createdUserId);
     // Check accountantUser is existing
-    await this.userService.findId(accountantUserId);
+    await this.userService.findUser(accountantUserId);
     // Check stockkeeperUser is existing
-    await this.userService.findId(stockkeeperUserId);
+    await this.userService.findUser(stockkeeperUserId);
 
     // Then update
-    findImport.shipper = shipper;
-    findImport.invoiceNumber = invoiceNumber;
-    findImport.note = note;
-    findImport.createdUserId = createdUserId;
-    findImport.accountantUserId = accountantUserId;
-    findImport.accConfirmedDate = accConfirmedDate;
-    findImport.stockkeeperUserId = stockkeeperUserId;
-    findImport.stockConfirmedDate = stockConfirmedDate;
-    findImport.status = status;
-    findImport.updatedAt = Date.now();
+    importDoc.shipper = shipper;
+    importDoc.invoiceNumber = invoiceNumber;
+    importDoc.note = note;
+    importDoc.createdUserId = createdUserId;
+    importDoc.accountantUserId = accountantUserId;
+    importDoc.accConfirmedDate = accConfirmedDate;
+    importDoc.stockkeeperUserId = stockkeeperUserId;
+    importDoc.stockConfirmedDate = stockConfirmedDate;
+    importDoc.status = status;
+    importDoc.updatedAt = Date.now();
 
-    return await findImport.save();
+    return await importDoc.save();
   }
 
   async delete(id: string): Promise<boolean> {
     // Find import document by id
-    const findImport =  await this.model.findById(id);
-    if (!findImport) throw new HttpException(`Not found findImport ${id}`, HttpStatus.NOT_FOUND);
+    const importDoc =  await this.findImport(id);
     // Add deletedAt field
-    findImport.deletedAt = Date.now();
-    await findImport.save();
+    importDoc.deletedAt = Date.now();
+    await importDoc.save();
     return true;
   }
 
-  /* Additional functions */
-  async findId(id: string): Promise<ImportResponseInterface> {
-    // Find Import document by id
-    const importInfo = await this.model.findById(id);
-    if(!importInfo) throw new NotFoundException(`importInfo [${id}] not exist.`);
-
-    return importInfo;
-  }
 }

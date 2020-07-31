@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ExportCreateRequest, ExportUpdateRequest } from '../../interface/export/export.request';
 import { ExportResponseInterface } from '../../interface/export/export.response';
 import { ExportService } from './export.service';
@@ -28,11 +28,7 @@ export class ExportController {
 
   @Get(':id')
   async getSingle(@Param('id') id: string): Promise<ExportResponseInterface> {
-    try {
       return await this.service.getSingle(id);
-    } catch(e) {
-      throw new HttpException(`Not found exportId ${id}`, HttpStatus.NOT_FOUND);
-    }
   }
 
   @Patch(':id')

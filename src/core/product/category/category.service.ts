@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CategoryInterface } from './category.model';
@@ -8,6 +8,22 @@ import { CategoryResponseInterface } from '../../../interface/product/category/c
 export class CategoryService {
   constructor(@InjectModel('Category') private readonly model: Model<CategoryInterface>,) {}
 
+  /* Additional functions */
+  async findCategory(id: string): Promise<CategoryInterface> {
+    let categoryDoc;
+    try {
+      // Find Category document by id
+      categoryDoc = await this.model.findById(id).exec();
+    } catch(error) {
+      throw new NotFoundException('Could not find category.'); // 404
+    }
+    if(!categoryDoc) {
+      throw new NotFoundException('Could not find category.'); // 404
+    }
+    return categoryDoc;
+  }
+
+  /* Main function */
   async create(name: string, status: string): Promise<CategoryResponseInterface> {
     // Create the new category
     const newCategory = new this.model({name, status});
@@ -21,37 +37,26 @@ export class CategoryService {
 
   async getSingle(id: string): Promise<CategoryResponseInterface> {
     // Finds a single document by id
-    return this.model.findById(id);
+    return await this.findCategory(id);
   }
 
   async update(id: string, name : string, status: string): Promise<CategoryResponseInterface> {
     // Find Category document by id
-    const findCategory = await this.model.findById(id);
-    if(!findCategory) throw new HttpException(`Not found categoryId ${id}`, HttpStatus.NOT_FOUND);
+    const category = await this.findCategory(id);
     // Then update
-    findCategory.name = name;
-    findCategory.status = status;
-    findCategory.updatedAt = Date.now();
+    category.name = name;
+    category.status = status;
+    category.updatedAt = Date.now();
 
-    return await findCategory.save();
+    return await category.save();
   }
 
   async delete(id: string): Promise<boolean> {
     // Find Category document by id
-    const findCategory = await this.model.findById(id);
-    if (!findCategory) throw new HttpException(`Not found findCategory ${id}`, HttpStatus.NOT_FOUND);
+    const category = await this.findCategory(id);
     // Add deletedAt field
-    findCategory.deletedAt = Date.now();
-    await findCategory.save();
+    category.deletedAt = Date.now();
+    await category.save();
     return true;
-  }
-
-  /* Additional functions */
-  async findId(id: string): Promise<CategoryResponseInterface> {
-    // Find Category document by id
-    const categoryInfo = await this.model.findById(id);
-    if(!categoryInfo) throw new NotFoundException(`categoryId [${id}] not exist.`);
-
-    return categoryInfo;
   }
 }

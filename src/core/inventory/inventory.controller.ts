@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { InventoryCreateRequest, InventoryUpdateRequest } from '../../interface/inventory/inventory.request';
 import { InventoryResponseInterface } from '../../interface/inventory/inventory.response';
 import { InventoryInterface } from './inventory.model';
@@ -21,11 +21,7 @@ export class InventoryController {
 
   @Get(':id')
   async getSingle(@Param('id') id: string): Promise<InventoryResponseInterface> {
-    try {
       return await this.service.getSingle(id);
-    } catch(e) {
-      throw new HttpException(`Not found inventoryId ${id}`, HttpStatus.NOT_FOUND);
-    }
   }
 
   @Patch(':id')

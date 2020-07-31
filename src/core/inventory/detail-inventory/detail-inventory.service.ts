@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UnitProductService } from '../../unit-product/unit-product.service';
@@ -14,13 +14,29 @@ export class DetailInventoryService {
               private readonly productService: ProductService,
               private readonly unitProductService: UnitProductService) {}
 
+  /* Additional functions */
+  async findDetail(id: string): Promise<DetailInventoryInterface> {
+    let detailDoc;
+    try {
+      // Find Detail-Inventory document by id
+      detailDoc = await this.model.findById(id).exec();
+    } catch(error) {
+      throw new NotFoundException('Could not find product.'); // 404
+    }
+    if(!detailDoc) {
+      throw new NotFoundException('Could not find product.'); // 404
+    }
+    return detailDoc;
+  }
+
+  /* Main function */
   async create( inventoryId: string, productId: string, unitProductId: string, quantity: number, price: number): Promise<DetailInventoryResponseInterface> {
     // Check Inventory is existing
-    await this.inventoryService.findId(inventoryId);
+    await this.inventoryService.findInventory(inventoryId);
     // Check Product is existing
-    await this.productService.findId(productId);
+    await this.productService.findProduct(productId);
     // Check Unit-Product is existing
-    await this.unitProductService.findId(unitProductId);
+    await this.unitProductService.findUnitProduct(unitProductId);
     // Create new inventory document
     const newDetail = new this.model({inventoryId, productId, unitProductId, quantity, price});
     return await newDetail.save();
@@ -33,22 +49,21 @@ export class DetailInventoryService {
 
   async getSingle(id: string): Promise<DetailInventoryResponseInterface> {
     // Find detail-inventory document by id
-    return this.model.findById(id);
+    return this.findDetail(id);
   }
 
   async delete(id: string): Promise<boolean> {
-    // Find detail-inventory document by id
-    const findDetail =  await this.model.findById(id);
-    if (!findDetail) throw new HttpException(`Not findDetail ${id} in DB`, HttpStatus.NOT_FOUND);
-
+    // Check inventory is existing
+    await this.findDetail(id);
+    // Then delete
     await this.model.deleteOne({_id: id}).exec();
     return true;
   }
 
   async getDetail(inventoryId: string): Promise<DetailInventoryInterface[]> {
     // Check inventory is existing
-    await this.inventoryService.findId(inventoryId);
-
+    await this.inventoryService.findInventory(inventoryId);
+    // Then find documents that same inventoryId
     return await this.model.find({ inventoryId : inventoryId }).exec();
   }
 }

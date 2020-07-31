@@ -1,5 +1,5 @@
 import { UnitProductService } from './unit-product.service';
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { UnitProductResponseInterface } from '../../interface/unit-product/unit-product.response';
 
 @Controller('unit-product')
@@ -18,11 +18,7 @@ export class UnitProductController {
 
   @Get(':id')
   async getSingle(@Param('id') id: string): Promise<UnitProductResponseInterface> {
-    try {
       return await this.service.getSingle(id);
-    } catch(e) {
-      throw new HttpException(`Not found unitProductId ${id}`, HttpStatus.NOT_FOUND);
-    }
   }
 
   @Patch(':id')

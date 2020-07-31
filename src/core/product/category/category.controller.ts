@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CategoryCreateRequest, CategoryUpdateRequest } from '../../../interface/product/category/category.request';
 import { CategoryInterface } from './category.model';
@@ -20,11 +20,7 @@ export class CategoryController {
 
   @Get(':id')
   async getSingle(@Param('id') id: string): Promise<CategoryResponseInterface> {
-    try {
       return await this.service.getSingle(id);
-    } catch(e) {
-      throw new HttpException(`Not found categoryId ${id}`, HttpStatus.NOT_FOUND);
-    }
   }
 
   @Patch(':id')

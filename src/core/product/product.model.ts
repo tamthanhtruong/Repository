@@ -1,19 +1,16 @@
 import * as mongoose from "mongoose";
 import { ProductStatusEnum } from '../../enum';
 
-// Khai báo data cho mongoose
 export const ProductSchema = new mongoose.Schema({
-  // category: CategorySchema,
   categoryId: {
     type: String,
     required: true,
-    trim: String,
+    trim: true,
   } ,
-  // category: String,
   unitProductId: {
     type: String,
     required: true,
-    trim: String,
+    trim: true,
   },
   name: String,
   code: String,
