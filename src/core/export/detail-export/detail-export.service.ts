@@ -18,12 +18,12 @@ export class DetailExportService {
   async findDetail(id: string): Promise<DetailExportInterface> {
     let detailDoc;
     try {
-      // Find Detail-Export document by id
+      // Find Product document by id
       detailDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException('Could not find product.'); // 404
+      throw new NotFoundException(` DetailID: ${id} is not exist `); // 404
     }
-    if(!detailDoc) throw new NotFoundException('Could not find product.'); // 404
+    if(!detailDoc) throw new NotFoundException(` DetailID: ${id} is not exist `); // 404
 
     return detailDoc;
   }

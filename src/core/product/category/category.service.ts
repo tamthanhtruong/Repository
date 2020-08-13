@@ -15,12 +15,17 @@ export class CategoryService {
       // Find Category document by id
       categoryDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException('Could not find category.'); // 404
+      throw new NotFoundException(` CategoryID: ${id} is not exist `); // 404
     }
-    if(!categoryDoc)  throw new NotFoundException('Could not find category.'); // 404
+    if(!categoryDoc)  throw new NotFoundException(` CategoryID: ${id} is not exist `); // 404
 
     return categoryDoc;
   }
+
+  // async checkExist(id: string): Promise<boolean> {
+  //   // const categoryDoc = await this.model.findById(id).exec();
+  //   return true;
+  // }
 
   /* Main functions */
   async create(name: string, status: string): Promise<CategoryResponseInterface> {

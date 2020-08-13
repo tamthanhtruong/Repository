@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { RoleStatusEnum } from '../../../enum';
+import { RoleStatusEnum } from '../../../enums/enum';
 
 // create schema by mogoose.Schema()
 export const RoleSchema = new mongoose.Schema({

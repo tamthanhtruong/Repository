@@ -16,9 +16,9 @@ export class RoleService {
       // Find Role document by id
       roleDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException('Could not find role.'); // 404
+      throw new NotFoundException(` RoleID: ${id} is not exist `); // 404
     }
-    if(!roleDoc) throw new NotFoundException('Could not find role.'); // 404
+    if(!roleDoc) throw new NotFoundException(` RoleID: ${id} is not exist `); // 404
 
     return roleDoc;
   }

@@ -1,6 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ProductCreateRequest, ProductUpdateRequest } from '../../interface/product/product.request';
+import {
+  ProductCreateRequest, ProductDeleteRequest,
+  ProductGetSingleRequest,
+  ProductUpdateRequest,
+} from '../../interface/product/product.request';
 import { ProductResponseInterface } from '../../interface/product/product.response';
 import { ProductInterface } from './product.model';
 
@@ -24,12 +36,12 @@ export class ProductController {
 
   @Get()
   async getAll(): Promise<ProductInterface[]> {
-      return await this.service.getAll();
+    return await this.service.getAll();
   }
 
   @Get(':id')
-  async getSingle(@Param('id') id: string): Promise<ProductResponseInterface> {
-      return await this.service.getSingle(id);
+  async getSingle(@Param() req: ProductGetSingleRequest): Promise<ProductResponseInterface> {
+      return await this.service.getSingle(req.id);
   }
 
   @Patch(':id')
@@ -43,10 +55,10 @@ export class ProductController {
                                         req.information,
                                         req.evaluation,
                                         req.status);
-    }
+  }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<boolean> {
-      return await this.service.delete(id);
+  async delete(@Param() req: ProductDeleteRequest): Promise<boolean> {
+    return await this.service.delete(req.id);
   }
 }

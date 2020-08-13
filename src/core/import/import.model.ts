@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { ImportStatusEnum } from '../../enum';
+import { ImportStatusEnum } from '../../enums/enum';
 
 export const ImportSchema = new mongoose.Schema({
   shipper: String,

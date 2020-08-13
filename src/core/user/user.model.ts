@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { UserSexEnum, UserStatusEnum } from '../../enum';
+import { UserSexEnum, UserStatusEnum } from '../../enums/enum';
 
 export const UserSchema = new mongoose.Schema({
   roleId: {

@@ -1,6 +1,6 @@
 export interface ExportResponseInterface {
   readonly _id: string;
-  receiverId: string;
+  receiver: string;
   invoiceNumber: number;
   invoiceDate?: number;
   note: string;
@@ -8,7 +8,7 @@ export interface ExportResponseInterface {
   createdDate?: string;
   accountantUserId: string;
   accConfirmedDate: number;
-  stockkeeperUserId: string;
+  stockKeeperUserId: string;
   stockConfirmedDate: number;
   createdAt?: number;
   updatedAt?: number;

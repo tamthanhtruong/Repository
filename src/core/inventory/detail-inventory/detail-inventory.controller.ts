@@ -1,6 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DetailInventoryInterface } from './detail-inventory.model';
-import { DetailInventoryCreateRequest } from '../../../interface/inventory/detail-inventory/detail-inventory.request';
+import {
+  DetailInventoryCreateRequest, DetailInventoryDeleteRequest, DetailInventoryGetDetailRequest,
+  DetailInventoryGetSingleRequest,
+} from '../../../interface/inventory/detail-inventory/detail-inventory.request';
 import { DetailInventoryResponseInterface } from '../../../interface/inventory/detail-inventory/detail-inventory.response';
 import { DetailInventoryService } from './detail-inventory.service';
 
@@ -20,17 +23,17 @@ export class DetailInventoryController {
   }
 
   @Get(':id')
-  async getSingle(@Param('id') id: string) {
-      return await this.service.getSingle(id);
+  async getSingle(@Param() req: DetailInventoryGetSingleRequest) {
+      return await this.service.getSingle(req.id);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<boolean> {
-    return await this.service.delete(id);
+  async delete(@Param() req: DetailInventoryDeleteRequest): Promise<boolean> {
+    return await this.service.delete(req.id);
   }
 
-  @Get('getDetail/:exportId')
-  async getDetail(@Param('exportId') exportId: string) {
-    return await this.service.getDetail(exportId);
+  @Get('getDetail/:id')
+  async getDetail(@Param() req: DetailInventoryGetDetailRequest): Promise<DetailInventoryInterface[]> {
+    return await this.service.getDetail(req.id);
   }
 }

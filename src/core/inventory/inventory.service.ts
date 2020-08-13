@@ -17,9 +17,9 @@ export class InventoryService {
       // Find Inventory document by id
       inventoryDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException('Could not find inventory.'); // 404
+      throw new NotFoundException(` InventoryID: ${id} is not exist `); // 404
     }
-    if(!inventoryDoc) throw new NotFoundException('Could not find inventory.'); // 404
+    if(!inventoryDoc) throw new NotFoundException(` InventoryID: ${id} is not exist `); // 404
 
     return inventoryDoc;
   }

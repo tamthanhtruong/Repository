@@ -1,5 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { InventoryCreateRequest, InventoryUpdateRequest } from '../../interface/inventory/inventory.request';
+import {
+  InventoryCreateRequest, InventoryDeleteRequest,
+  InventoryGetSingleRequest,
+  InventoryUpdateRequest,
+} from '../../interface/inventory/inventory.request';
 import { InventoryResponseInterface } from '../../interface/inventory/inventory.response';
 import { InventoryInterface } from './inventory.model';
 import { InventoryService } from './inventory.service';
@@ -20,8 +24,8 @@ export class InventoryController {
   }
 
   @Get(':id')
-  async getSingle(@Param('id') id: string): Promise<InventoryResponseInterface> {
-      return await this.service.getSingle(id);
+  async getSingle(@Param() req: InventoryGetSingleRequest): Promise<InventoryResponseInterface> {
+      return await this.service.getSingle(req.id);
   }
 
   @Patch(':id')
@@ -30,7 +34,7 @@ export class InventoryController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<boolean> {
-    return await this.service.delete(id);
+  async delete(@Param() req: InventoryDeleteRequest): Promise<boolean> {
+    return await this.service.delete(req.id);
   }
 }

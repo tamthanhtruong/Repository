@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { InventoryStatusEnum } from '../../enum';
+import { InventoryStatusEnum } from '../../enums/enum';
 
 export const InventorySchema = new mongoose.Schema({
   invoiceNumber: Number,

@@ -15,11 +15,11 @@ export class ImportService {
     let importDoc;
     try {
       // Find Import document by id
-      importDoc = await this.model.findById(id).exec();
+       importDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException('Could not find import.'); // 404
+      throw new NotFoundException(` ImportID: ${id} is not exist `); // 404
     }
-    if(!importDoc) throw new NotFoundException('Could not find import.'); // 404
+    if(!importDoc) throw new NotFoundException(` ImportID: ${id} is not exist `); // 404
 
     return importDoc;
   }

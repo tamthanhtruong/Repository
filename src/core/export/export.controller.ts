@@ -1,5 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { ExportCreateRequest, ExportUpdateRequest } from '../../interface/export/export.request';
+import {
+  ExportCreateRequest, ExportDeleteRequest,
+  ExportGetSingleRequest,
+  ExportUpdateRequest,
+} from '../../interface/export/export.request';
 import { ExportResponseInterface } from '../../interface/export/export.response';
 import { ExportService } from './export.service';
 import { ExportInterface } from './export.model';
@@ -10,13 +14,13 @@ export class ExportController {
 
   @Post()
   async create(@Body() req: ExportCreateRequest): Promise<ExportResponseInterface> {
-    return await this.service.create( req.receiverId,
+    return await this.service.create( req.receiver,
                                       req.invoiceNumber,
                                       req.note,
                                       req.createdUserId,
                                       req.accountantUserId,
                                       req.accConfirmedDate,
-                                      req.stockkeeperUserId,
+                                      req.stockKeeperUserId,
                                       req.stockConfirmedDate,
                                       req.status);
   }
@@ -27,26 +31,26 @@ export class ExportController {
   }
 
   @Get(':id')
-  async getSingle(@Param('id') id: string): Promise<ExportResponseInterface> {
-      return await this.service.getSingle(id);
+  async getSingle(@Param() req: ExportGetSingleRequest): Promise<ExportResponseInterface> {
+      return await this.service.getSingle(req.id);
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() req: ExportUpdateRequest) {
     return await this.service.update( id,
-                                      req.receiverId,
+                                      req.receiver,
                                       req.invoiceNumber,
                                       req.note,
                                       req.createdUserId,
                                       req.accountantUserId,
                                       req.accConfirmedDate,
-                                      req.stockkeeperUserId,
+                                      req.stockKeeperUserId,
                                       req.stockConfirmedDate,
                                       req.status);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<boolean> {
-    return await this.service.delete(id);
+  async delete(@Param() req: ExportDeleteRequest): Promise<boolean> {
+    return await this.service.delete(req.id);
   }
 }

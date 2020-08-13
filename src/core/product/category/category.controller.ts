@@ -1,8 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { CategoryCreateRequest, CategoryUpdateRequest } from '../../../interface/product/category/category.request';
+import {
+  CategoryCreateRequest,
+  CategoryGetSingleRequest,
+  CategoryUpdateRequest,
+} from '../../../interface/product/category/category.request';
 import { CategoryInterface } from './category.model';
 import { CategoryResponseInterface } from '../../../interface/product/category/category.response';
+import { ProductDeleteRequest } from '../../../interface/product/product.request';
 
 @Controller('category')
 export class CategoryController {
@@ -19,8 +24,8 @@ export class CategoryController {
   }
 
   @Get(':id')
-  async getSingle(@Param('id') id: string): Promise<CategoryResponseInterface> {
-      return await this.service.getSingle(id);
+  async getSingle(@Param() req: CategoryGetSingleRequest): Promise<CategoryResponseInterface> {
+    return await this.service.getSingle(req.id);
   }
 
   @Patch(':id')
@@ -29,7 +34,7 @@ export class CategoryController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<boolean> {
-    return await this.service.delete(id);
+  async delete(@Param() req: ProductDeleteRequest): Promise<boolean> {
+    return await this.service.delete(req.id);
   }
 }

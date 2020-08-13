@@ -1,5 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { RoleCreateRequest, RoleUpdateRequest } from '../../../interface/user/role/role.request';
+import {
+  RoleCreateRequest,
+  RoleDeleteRequest,
+  RoleGetSingleRequest,
+  RoleUpdateRequest,
+} from '../../../interface/user/role/role.request';
 import { RoleService } from './role.service';
 import { RoleResponseInterface } from '../../../interface/user/role/role.response';
 import { RoleInterface } from './role.model';
@@ -19,8 +24,8 @@ export class RoleController {
   }
 
   @Get(':id')
-  async getSingle(@Param('id') id: string): Promise<RoleResponseInterface> {
-      return await this.service.getSingle(id);
+  async getSingle(@Param() req: RoleGetSingleRequest): Promise<RoleResponseInterface> {
+      return await this.service.getSingle(req.id);
   }
 
   @Patch(':id')
@@ -29,7 +34,7 @@ export class RoleController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<boolean> {
-    return await this.service.delete(id);
+  async delete(@Param() req: RoleDeleteRequest): Promise<boolean> {
+    return await this.service.delete(req.id);
   }
 }

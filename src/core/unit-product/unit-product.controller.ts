@@ -1,14 +1,17 @@
 import { UnitProductService } from './unit-product.service';
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { UnitProductResponseInterface } from '../../interface/unit-product/unit-product.response';
+import {
+  UnitProductCreateRequest, UnitProductDeleteRequest, UnitProductGetSingleRequest, UnitProductUpdateRequest,
+} from '../../interface/unit-product/unit-product.request';
 
 @Controller('unit-product')
 export class UnitProductController {
   constructor(private readonly service: UnitProductService) {}
 
   @Post()
-  async create(@Body() name: string): Promise<UnitProductResponseInterface> {
-      return await this.service.create(name);
+  async create( @Body() req: UnitProductCreateRequest ): Promise<UnitProductResponseInterface> {
+    return await this.service.create(req.name);
   }
 
   @Get()
@@ -17,17 +20,17 @@ export class UnitProductController {
   }
 
   @Get(':id')
-  async getSingle(@Param('id') id: string): Promise<UnitProductResponseInterface> {
-      return await this.service.getSingle(id);
+  async getSingle(@Param() req: UnitProductGetSingleRequest): Promise<UnitProductResponseInterface> {
+    return await this.service.getSingle(req.id);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body('name') name: string): Promise<UnitProductResponseInterface> {
-    return await this.service.update(id, name);
+  async update(@Param('id') id: string, @Body() req: UnitProductUpdateRequest): Promise<UnitProductResponseInterface> {
+    return await this.service.update(id, req.name);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<boolean> {
-      return await this.service.delete(id);
+  async delete(@Param() req: UnitProductDeleteRequest): Promise<boolean> {
+      return await this.service.delete(req.id);
   }
 }

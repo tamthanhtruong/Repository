@@ -14,38 +14,36 @@ export class ExportService {
   async findExport(id: string): Promise<ExportInterface> {
     let exportDoc;
     try {
-      // Find Export document by id
+      // Find Product document by id
       exportDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException('Could not find export.'); // 404
+      throw new NotFoundException(` ExportID: ${id} is not exist `); // 404
     }
-    if(!exportDoc) throw new NotFoundException('Could not find export.'); // 404
+    if(!exportDoc) throw new NotFoundException(` ExportID: ${id} is not exist `); // 404
 
     return exportDoc;
   }
 
   /* Main functions */
-  async create( receiverId: string,
+  async create( receiver: string,
                 invoiceNumber: number,
                 note: string,
                 createdUserId: string,
                 accountantUserId: string,
                 accConfirmedDate: number,
-                stockkeeperUserId: string,
+                stockKeeperUserId: string,
                 stockConfirmedDate: number,
                 status: string) {
 
-    // Check receiver is existing
-    await this.userService.findUser(receiverId);
     // Check createdUser is existing
     await this.userService.findUser(createdUserId);
     // Check accountantUser is existing
     await this.userService.findUser(accountantUserId);
-    // Check stockkeeperUser is existing
-    await this.userService.findUser(stockkeeperUserId);
+    // Check stockKeeperUser is existing
+    await this.userService.findUser(stockKeeperUserId);
     try {
       // Create new import document
-      const newExport = new this.model({receiverId,invoiceNumber,note,createdUserId,accountantUserId,accConfirmedDate,stockkeeperUserId,stockConfirmedDate,status});
+      const newExport = new this.model({receiver,invoiceNumber,note,createdUserId,accountantUserId,accConfirmedDate,stockKeeperUserId,stockConfirmedDate,status});
       return await newExport.save();
     } catch(e) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
@@ -67,35 +65,33 @@ export class ExportService {
   }
 
   async update(  id: string,
-                 receiverId: string,
+                 receiver: string,
                  invoiceNumber: number,
                  note: string,
                  createdUserId: string,
                  accountantUserId: string,
                  accConfirmedDate: number,
-                 stockkeeperUserId: string,
+                 stockKeeperUserId: string,
                  stockConfirmedDate: number,
                  status: string ): Promise<ExportResponseInterface> {
 
     // Find export document by id
     const exportDoc = await this.findExport(id);
-    // Check receiver is existing
-    await this.userService.findUser(receiverId);
     // Check createdUser is existing
     await this.userService.findUser(createdUserId);
     // Check accountantUser is existing
     await this.userService.findUser(accountantUserId);
-    // Check stockkeeperUser is existing
-    await this.userService.findUser(stockkeeperUserId);
+    // Check stockKeeperUser is existing
+    await this.userService.findUser(stockKeeperUserId);
     try {
       // Then update
-      exportDoc.receiverId = receiverId;
+      exportDoc.receiver = receiver;
       exportDoc.invoiceNumber = invoiceNumber;
       exportDoc.note = note;
       exportDoc.createdUserId = createdUserId;
       exportDoc.accountantUserId = accountantUserId;
       exportDoc.accConfirmedDate = accConfirmedDate;
-      exportDoc.stockkeeperUserId = stockkeeperUserId;
+      exportDoc.stockKeeperUserId = stockKeeperUserId;
       exportDoc.stockConfirmedDate = stockConfirmedDate;
       exportDoc.status = status;
       exportDoc.updatedAt = Date.now();

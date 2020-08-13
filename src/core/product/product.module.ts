@@ -6,7 +6,6 @@ import { ProductService } from './product.service';
 import { CategoryModule } from './category/category.module';
 import { UnitProductModule } from '../unit-product/unit-product.module';
 
-// @Module() là Decorator
 @Module({
   imports: [MongooseModule.forFeature([{name: 'Product', schema: ProductSchema}]), CategoryModule, UnitProductModule],
   controllers: [ProductController],

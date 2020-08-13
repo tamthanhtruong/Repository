@@ -19,9 +19,9 @@ export class ProductService {
       // Find Product document by id
       productDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException('Could not find product.'); // 404
+      throw new NotFoundException(` ProductID: ${id} is not exist `); // 404
     }
-    if(!productDoc) throw new NotFoundException('Could not find product.'); // 404
+    if(!productDoc) throw new NotFoundException(` ProductID: ${id} is not exist `); // 404
 
     return productDoc;
   }
@@ -53,7 +53,6 @@ export class ProductService {
 
   async getAll(): Promise<ProductInterface[]> {
     try {
-      // Find documents
       return await this.model.find().exec();
     } catch (e) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
@@ -73,7 +72,7 @@ export class ProductService {
                 image: string,
                 information: string,
                 evaluation: string,
-                status: string): Promise<ProductResponseInterface> {
+                status: string) {
 
     // Find product document by id
     const product = await this.findProduct(id);
@@ -93,7 +92,6 @@ export class ProductService {
     } catch (e) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
     }
-
   }
 
   async delete(id: string): Promise<boolean> {

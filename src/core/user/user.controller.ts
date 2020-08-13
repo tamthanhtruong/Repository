@@ -1,6 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserCreateRequest, UserUpdateRequest } from '../../interface/user/user.request';
+import {
+  UserCreateRequest,
+  UserDeleteRequest,
+  UserGetSingleRequest,
+  UserUpdateRequest,
+} from '../../interface/user/user.request';
 import { UserResponseInterface } from '../../interface/user/user.response';
 import { UserInterface } from './user.model';
 
@@ -28,8 +33,8 @@ export class UserController {
   }
 
   @Get(':id')
-  async getSingle(@Param('id') id: string): Promise<UserResponseInterface> {
-      return await this.userService.getSingle(id);
+  async getSingle(@Param() req: UserGetSingleRequest): Promise<UserResponseInterface> {
+      return await this.userService.getSingle(req.id);
   }
 
   @Patch(':id')
@@ -47,7 +52,7 @@ export class UserController {
                                           req.status);}
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<boolean> {
-    return await this.userService.delete(id);
+  async delete(@Param() req: UserDeleteRequest): Promise<boolean> {
+    return await this.userService.delete(req.id);
   }
 }

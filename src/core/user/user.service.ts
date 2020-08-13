@@ -17,9 +17,9 @@ export class UserService {
       // Find User document by id
       userDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException('Could not find user.'); // 404
+      throw new NotFoundException(` UserID: ${id} is not exist `); // 404
     }
-    if(!userDoc) throw new NotFoundException('Could not find user.'); // 404
+    if(!userDoc) throw new NotFoundException(` UserID: ${id} is not exist `); // 404
 
     return userDoc;
   }
@@ -65,6 +65,7 @@ export class UserService {
 
     //Find user document by id
     const user = await this.findUser(id);
+
     try {
       // Then update
       user.roleId = roleId;

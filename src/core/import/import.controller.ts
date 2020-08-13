@@ -1,6 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ImportService } from './import.service';
-import { ImportCreateRequest, ImportUpdateRequest } from '../../interface/import/import.request';
+import {
+  ImportCreateRequest, ImportDeleteRequest,
+  ImportGetSingleRequest,
+  ImportUpdateRequest,
+} from '../../interface/import/import.request';
 import { ImportResponseInterface } from '../../interface/import/import.response';
 import { ImportInterface } from './import.model';
 
@@ -27,12 +31,12 @@ export class ImportController {
   }
 
   @Get(':id')
-  async getSingle(@Param('id') id: string): Promise<ImportResponseInterface> {
-      return await this.service.getSingle(id);
+  async getSingle(@Param() req: ImportGetSingleRequest): Promise<ImportResponseInterface> {
+      return await this.service.getSingle(req.id);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() req: ImportUpdateRequest) {
+  async update(@Param('id') id: string, @Body() req: ImportUpdateRequest): Promise<ImportResponseInterface> {
     return await this.service.update( id,
                                       req.shipper,
                                       req.invoiceNumber,
@@ -46,7 +50,7 @@ export class ImportController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<boolean> {
-    return await this.service.delete(id);
+  async delete(@Param() req: ImportDeleteRequest): Promise<boolean> {
+    return await this.service.delete(req.id);
   }
 }

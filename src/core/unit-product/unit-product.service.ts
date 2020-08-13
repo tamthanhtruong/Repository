@@ -15,18 +15,19 @@ export class UnitProductService {
       // Find Unit-product document by id
       unitDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException('Could not find Unit-product.'); // 404
+      throw new NotFoundException(` UnitProductID: ${id} is not exist `); // 404
     }
-    if(!unitDoc) throw new NotFoundException('Could not find Unit-product.'); // 404
+    if(!unitDoc) throw new NotFoundException(` UnitProductID: ${id} is not exist `); // 404
 
     return unitDoc;
   }
 
   /* Main functions */
   async create(name: string): Promise<UnitProductResponseInterface> {
+
     try {
       // Create the new unit-product
-      const newUnit = new this.model(name);
+      const newUnit = new this.model({name});
       return await newUnit.save();
     } catch(e) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403

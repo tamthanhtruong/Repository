@@ -1,8 +1,8 @@
 import * as mongoose from "mongoose";
-import { ExportStatusEnum } from '../../enum';
+import { ExportStatusEnum } from '../../enums/enum';
 
 export const ExportSchema = new mongoose.Schema({
-  receiverId: String,
+  receiver: String,
   invoiceNumber: Number,
   invoiceDate: { type: Number, default: Date.now },
   note: String,
@@ -10,7 +10,7 @@ export const ExportSchema = new mongoose.Schema({
   createdDate: { type: Number, default: Date.now },
   accountantUserId: String,
   accConfirmedDate: Number,
-  stockkeeperUserId: String,
+  stockKeeperUserId: String,
   stockConfirmedDate: Number,
   createdAt: { type: Number, default: Date.now },
   updatedAt: { type: Number, default: Date.now },
@@ -20,7 +20,7 @@ export const ExportSchema = new mongoose.Schema({
 
 export interface ExportInterface extends mongoose.Document {
   readonly _id: string;
-  receiverId: string;
+  receiver: string;
   invoiceNumber: number;
   invoiceDate?: number;
   note: string;
@@ -28,7 +28,7 @@ export interface ExportInterface extends mongoose.Document {
   createdDate?: string;
   accountantUserId: string;
   accConfirmedDate: number;
-  stockkeeperUserId: string;
+  stockKeeperUserId: string;
   stockConfirmedDate: number;
   createdAt?: number;
   updatedAt?: number;

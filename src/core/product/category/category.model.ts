@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { CategoryStatusEnum } from '../../../enum';
+import { CategoryStatusEnum } from '../../../enums/enum';
 
 // Khai báo data cho mongoose
 export const CategorySchema = new mongoose.Schema({

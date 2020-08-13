@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import { ProductStatusEnum } from '../../enum';
+import { ProductStatusEnum } from '../../enums/enum';
 
 export const ProductSchema = new mongoose.Schema({
   categoryId: {

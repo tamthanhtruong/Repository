@@ -21,9 +21,9 @@ export class DetailImportService {
       // Find Detail-Import document by id
       detailDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException('Could not find product.'); // 404
+      throw new NotFoundException(` DetailID: ${id} is not exist `); // 404
     }
-    if(!detailDoc) throw new NotFoundException('Could not find product.'); // 404
+    if(!detailDoc) throw new NotFoundException(` DetailID: ${id} is not exist `); // 404
 
     return detailDoc;
   }
@@ -74,6 +74,7 @@ export class DetailImportService {
   async getDetail(importId: string): Promise<DetailImportInterface[]> {
     // Check Import is existing
     await this.importService.findImport(importId);
+
     try {
       // Then find documents that same importId
       return await this.model.find({ importId : importId }).exec();
