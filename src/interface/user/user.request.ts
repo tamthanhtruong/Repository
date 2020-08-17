@@ -1,32 +1,40 @@
 import { IsNotEmpty, IsString, Validate } from 'class-validator';
 import { IdRoleExist } from '../../validators/role.validator';
+import { IdUserExist } from '../../validators/user.validator';
 
 export class UserCreateRequest {
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdRoleExist)
   roleId: string;
+
   @IsString()
   @IsNotEmpty()
   account: string;
+
   @IsString()
   @IsNotEmpty()
   password: string;
+
   @IsString()
   @IsNotEmpty()
   name: string;
+
   @IsString()
   @IsNotEmpty()
   sex: string;
+
   @IsString()
   @IsNotEmpty()
   email: string;
+
   @IsString()
   @IsNotEmpty()
   dateOfBirth: string;
+
   @IsString()
   @IsNotEmpty()
   address: string;
+
   @IsString()
   @IsNotEmpty()
   phone: string;
@@ -35,18 +43,19 @@ export class UserCreateRequest {
 }
 
 export class UserGetSingleRequest {
-  @IsString()
+  @Validate(IdUserExist)
   id: string;
 }
 
 export class UserUpdateRequest {
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdRoleExist)
   roleId: string;
+
   @IsString()
   @IsNotEmpty()
   account: string;
+
   @IsString()
   @IsNotEmpty()
   password: string;
@@ -64,6 +73,7 @@ export class UserUpdateRequest {
   @IsString()
   @IsNotEmpty()
   address: string;
+
   @IsString()
   @IsNotEmpty()
   phone: string;
@@ -72,6 +82,6 @@ export class UserUpdateRequest {
 }
 
 export class UserDeleteRequest {
-  @IsString()
+  @Validate(IdUserExist)
   id: string;
 }

@@ -6,6 +6,7 @@ import { CategoryResponseInterface } from '../../../interface/product/category/c
 
 @Injectable()
 export class CategoryService {
+
   constructor(@InjectModel('Category') private readonly model: Model<CategoryInterface>,) {}
 
   /* Additional functions */
@@ -22,10 +23,9 @@ export class CategoryService {
     return categoryDoc;
   }
 
-  // async checkExist(id: string): Promise<boolean> {
-  //   // const categoryDoc = await this.model.findById(id).exec();
-  //   return true;
-  // }
+  async checkExist(id: string): Promise<boolean> {
+    return await this.model.exists({ _id : id});
+  }
 
   /* Main functions */
   async create(name: string, status: string): Promise<CategoryResponseInterface> {

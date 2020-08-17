@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DetailExportInterface } from './detail-export.model';
 import {
-  DetailExportCreateRequest, DetailExportDeleteRequest, DetailExportGetDetailRequest,
+  DetailExportCreateRequest,
+  DetailExportDeleteRequest,
+  DetailExportGetDetailExportRequest,
   DetailExportGetSingleRequest,
 } from '../../../interface/export/detail-export/detail-export.request';
 import { DetailExportResponseInterface } from '../../../interface/export/detail-export/detail-export.response';
@@ -32,8 +34,8 @@ export class DetailExportController {
     return await this.service.delete(req.id);
   }
 
-  @Get('getDetail/:id')
-  async getDetail(@Param() req: DetailExportGetDetailRequest): Promise<DetailExportInterface[]> {
-    return await this.service.getDetail(req.id);
+  @Get('getDetailExport/:id')
+  async getDetailExport(@Param() req: DetailExportGetDetailExportRequest): Promise<DetailExportInterface[]> {
+    return await this.service.getDetailExport(req.id);
   }
 }

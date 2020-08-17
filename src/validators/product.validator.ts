@@ -1,13 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import { isEmpty, isMongoId, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import { ProductService } from '../core/product/product.service';
 
 @Injectable()
 @ValidatorConstraint({async: true })
 export class IdProductExist implements ValidatorConstraintInterface {
 
+  constructor(private readonly productService: ProductService) {}
+
   // for async validations you must return a Promise<boolean> here
   async validate(id: string): Promise<boolean> {
-    return id.length == 24;
+    if (isEmpty(id)) return false;
+    if (!isMongoId(id)) return false;
+    return await this.productService.checkExist(id);
   }
 
   defaultMessage() {

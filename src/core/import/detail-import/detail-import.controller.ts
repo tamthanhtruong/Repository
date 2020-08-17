@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DetailImportService } from './detail-import.service';
 import {
-  DetailImportCreateRequest, DetailImportDeleteRequest, DetailImportGetDetailRequest,
+  DetailImportCreateRequest,
+  DetailImportDeleteRequest,
+  DetailImportGetDetailImportRequest,
   DetailImportGetSingleRequest,
 } from '../../../interface/import/detail-import/detail-import.request';
 import { DetailImportResponseInterface } from '../../../interface/import/detail-import/detail-import.response';
@@ -32,8 +34,8 @@ export class DetailImportController {
     return await this.service.delete(req.id);
   }
 
-  @Get('getDetail/:id')
-  async getDetail(@Param() req: DetailImportGetDetailRequest): Promise<DetailImportInterface[]>  {
-    return await this.service.getDetail(req.id);
+  @Get('getDetailImport/:id')
+  async getDetailImport(@Param() req: DetailImportGetDetailImportRequest): Promise<DetailImportInterface[]>  {
+    return await this.service.getDetailImport(req.id);
   }
 }

@@ -3,16 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { DetailImportInterface } from './detail-import.model';
 import { Model } from 'mongoose';
 import { DetailImportResponseInterface } from '../../../interface/import/detail-import/detail-import.response';
-import { ImportService } from '../import.service';
-import { UnitProductService } from '../../unit-product/unit-product.service';
-import { ProductService } from '../../product/product.service';
 
 @Injectable()
 export class DetailImportService {
-  constructor(@InjectModel('detail-imports') private readonly model: Model<DetailImportInterface>,
-                                                    private readonly importService: ImportService,
-                                                    private readonly productService: ProductService,
-                                                    private readonly unitProductService: UnitProductService) {}
+
+  constructor(@InjectModel('detail-imports') private readonly model: Model<DetailImportInterface>,) {}
 
   /* Additional functions */
   async findDetail(id: string): Promise<DetailImportInterface> {
@@ -28,14 +23,17 @@ export class DetailImportService {
     return detailDoc;
   }
 
+  async checkExist(id: string): Promise<boolean> {
+    return await this.model.exists({ _id : id});
+  }
+
   /* Main functions */
-  async create( importId: string, productId: string, unitProductId: string, quantity: number, price: number): Promise<DetailImportResponseInterface> {
-    // Check Import is existing
-    await this.importService.findImport(importId);
-    // Check Product is existing
-    await this.productService.findProduct(productId);
-    // Check Unit-Product is existing
-    await this.unitProductService.findUnitProduct(unitProductId);
+  async create(
+                importId: string,
+                productId: string,
+                unitProductId: string,
+                quantity: number,
+                price: number ): Promise<DetailImportResponseInterface> {
     try {
       // Create new import document
       const newDetail = new this.model({importId, productId, unitProductId, quantity, price});
@@ -61,22 +59,20 @@ export class DetailImportService {
 
   async delete(id: string): Promise<boolean> {
     // Check import is existing
-    await this.findDetail(id);
+    const detail = await this.findDetail(id);
     try {
-      // Then delete
-      await this.model.deleteOne({_id: id}).exec();
+      // Add deletedAt field
+      detail.deletedAt = Date.now();
+      await detail.save();
       return true;
     } catch(e) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
     }
   }
 
-  async getDetail(importId: string): Promise<DetailImportInterface[]> {
-    // Check Import is existing
-    await this.importService.findImport(importId);
-
+  async getDetailImport(importId: string): Promise<DetailImportInterface[]> {
     try {
-      // Then find documents that same importId
+      // Find documents that same importId
       return await this.model.find({ importId : importId }).exec();
     } catch(e) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403

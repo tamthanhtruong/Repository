@@ -1,14 +1,13 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from "mongoose";
-import { UserService } from '../user/user.service';
 import { ExportResponseInterface } from '../../interface/export/export.response';
 import { ExportInterface } from './export.model';
 
 @Injectable()
 export class ExportService {
-  constructor(@InjectModel('exports') private readonly model: Model<ExportInterface>,
-              private readonly userService: UserService) {}
+
+  constructor(@InjectModel('exports') private readonly model: Model<ExportInterface>,) {}
 
   /* Additional functions */
   async findExport(id: string): Promise<ExportInterface> {
@@ -24,6 +23,10 @@ export class ExportService {
     return exportDoc;
   }
 
+  async checkExist(id: string): Promise<boolean> {
+    return await this.model.exists({ _id : id});
+  }
+
   /* Main functions */
   async create( receiver: string,
                 invoiceNumber: number,
@@ -35,12 +38,6 @@ export class ExportService {
                 stockConfirmedDate: number,
                 status: string) {
 
-    // Check createdUser is existing
-    await this.userService.findUser(createdUserId);
-    // Check accountantUser is existing
-    await this.userService.findUser(accountantUserId);
-    // Check stockKeeperUser is existing
-    await this.userService.findUser(stockKeeperUserId);
     try {
       // Create new import document
       const newExport = new this.model({receiver,invoiceNumber,note,createdUserId,accountantUserId,accConfirmedDate,stockKeeperUserId,stockConfirmedDate,status});
@@ -77,12 +74,6 @@ export class ExportService {
 
     // Find export document by id
     const exportDoc = await this.findExport(id);
-    // Check createdUser is existing
-    await this.userService.findUser(createdUserId);
-    // Check accountantUser is existing
-    await this.userService.findUser(accountantUserId);
-    // Check stockKeeperUser is existing
-    await this.userService.findUser(stockKeeperUserId);
     try {
       // Then update
       exportDoc.receiver = receiver;

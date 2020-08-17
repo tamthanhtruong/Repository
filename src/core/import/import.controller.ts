@@ -20,7 +20,7 @@ export class ImportController {
                                       req.createdUserId,
                                       req.accountantUserId,
                                       req.accConfirmedDate,
-                                      req.stockkeeperUserId,
+                                      req.stockKeeperUserId,
                                       req.stockConfirmedDate,
                                       req.status);
   }
@@ -44,7 +44,7 @@ export class ImportController {
                                       req.createdUserId,
                                       req.accountantUserId,
                                       req.accConfirmedDate,
-                                      req.stockkeeperUserId,
+                                      req.stockKeeperUserId,
                                       req.stockConfirmedDate,
                                       req.status);
   }

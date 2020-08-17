@@ -1,40 +1,40 @@
-import { IsNotEmpty, IsNumber, IsString, Validate } from 'class-validator';
+import { IsNotEmpty, IsNumber, Validate } from 'class-validator';
 import { IdProductExist } from '../../../validators/product.validator';
 import { IdUnitProductExist } from '../../../validators/unit-product.validator';
 import { IdExportExist } from '../../../validators/export.validator';
+import { IdDetailExportExist } from '../../../validators/detail-export.validator';
 
 export class DetailExportCreateRequest {
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdExportExist)
   exportId: string;
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdProductExist)
   productId: string;
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdUnitProductExist)
   unitProductId: string;
+
   @IsNumber()
   @IsNotEmpty()
   quantity: number;
+
   @IsNumber()
   @IsNotEmpty()
   price: number;
 }
 
 export class DetailExportGetSingleRequest {
-  @IsString()
+  @Validate(IdDetailExportExist)
   id: string;
 }
 
 export class DetailExportDeleteRequest {
-  @IsString()
+  @Validate(IdDetailExportExist)
   id: string;
 }
 
-export class DetailExportGetDetailRequest {
-  @IsString()
+export class DetailExportGetDetailExportRequest {
+  @Validate(IdExportExist)
   id: string;
 }

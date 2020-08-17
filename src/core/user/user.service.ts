@@ -2,13 +2,12 @@ import { UserInterface } from './user.model';
 import { Model } from 'mongoose';
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { RoleService } from './role/role.service';
 import { UserResponseInterface } from '../../interface/user/user.response';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('users') private readonly model: Model<UserInterface>,
-              private readonly roleService: RoleService) {}
+
+  constructor(@InjectModel('users') private readonly model: Model<UserInterface>,) {}
 
   /* Additional functions */
   async findUser(id: string): Promise<UserInterface> {
@@ -24,10 +23,21 @@ export class UserService {
     return userDoc;
   }
 
+  async checkExist(id: string): Promise<boolean> {
+    return await this.model.exists({ _id : id});
+  }
+
   /* Main functions */
-  async create(roleId, account, password, name, sex, email, dateOfBirth, address, phone, status): Promise<UserResponseInterface> {
-    // Check roleId is existing
-    await this.roleService.findRole(roleId);
+  async create(roleId: string,
+               account: string,
+               password: string,
+               name: string,
+               sex: string,
+               email: string,
+               dateOfBirth: string,
+               address: string,
+               phone: string,
+               status: string ): Promise<UserResponseInterface> {
     try {
       // Create the new user
       const newUser = new this.model({roleId, account, password, name, sex, email, dateOfBirth, address, phone, status});
@@ -61,7 +71,7 @@ export class UserService {
                 dateOfBirth:string,
                 address:string,
                 phone:string,
-                status?:string): Promise<UserResponseInterface> {
+                status?:string ): Promise<UserResponseInterface> {
 
     //Find user document by id
     const user = await this.findUser(id);

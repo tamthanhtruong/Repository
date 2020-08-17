@@ -2,15 +2,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProductInterface } from './product.model';
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { CategoryService } from './category/category.service';
 import { ProductResponseInterface } from '../../interface/product/product.response';
-import { UnitProductService } from '../unit-product/unit-product.service';
 
 @Injectable()
 export class ProductService {
-  constructor(@InjectModel('Product') private readonly model: Model<ProductInterface>,
-              private readonly categoryService: CategoryService,
-              private readonly unitProductService: UnitProductService) {}
+
+  constructor(@InjectModel('Product') private readonly model: Model<ProductInterface>,) {}
 
   /* Additional functions */
   async findProduct(id: string): Promise<ProductInterface> {
@@ -26,6 +23,10 @@ export class ProductService {
     return productDoc;
   }
 
+  async checkExist(id: string): Promise<boolean> {
+    return await this.model.exists({ _id : id});
+  }
+
   /* Main functions */
   async create( categoryId: string,
                 unitProductId: string,
@@ -38,10 +39,6 @@ export class ProductService {
                 evaluation: string,
                 status: string ): Promise<ProductResponseInterface> {
 
-    // Check Category is existing
-    await this.categoryService.findCategory(categoryId);
-    // Check Unit-Product is existing
-    await this.unitProductService.findUnitProduct(unitProductId);
     // Create the new product
     try {
       const newProduct = new this.model({categoryId, unitProductId, name, code, originPrice, price, image, information, evaluation, status});

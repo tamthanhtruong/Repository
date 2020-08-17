@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DetailInventoryInterface } from './detail-inventory.model';
 import {
-  DetailInventoryCreateRequest, DetailInventoryDeleteRequest, DetailInventoryGetDetailRequest,
+  DetailInventoryCreateRequest,
+  DetailInventoryDeleteRequest,
+  DetailInventoryGetDetailInventoryRequest,
   DetailInventoryGetSingleRequest,
 } from '../../../interface/inventory/detail-inventory/detail-inventory.request';
 import { DetailInventoryResponseInterface } from '../../../interface/inventory/detail-inventory/detail-inventory.response';
@@ -9,8 +11,7 @@ import { DetailInventoryService } from './detail-inventory.service';
 
 @Controller('detail-inventory')
 export class DetailInventoryController {
-  constructor(private readonly service: DetailInventoryService) {
-  }
+  constructor(private readonly service: DetailInventoryService) {}
 
   @Post()
   async create(@Body() req: DetailInventoryCreateRequest): Promise<DetailInventoryResponseInterface> {
@@ -32,8 +33,8 @@ export class DetailInventoryController {
     return await this.service.delete(req.id);
   }
 
-  @Get('getDetail/:id')
-  async getDetail(@Param() req: DetailInventoryGetDetailRequest): Promise<DetailInventoryInterface[]> {
-    return await this.service.getDetail(req.id);
+  @Get('getDetailInventory/:id')
+  async getDetailInventory(@Param() req: DetailInventoryGetDetailInventoryRequest): Promise<DetailInventoryInterface[]> {
+    return await this.service.getDetailInventory(req.id);
   }
 }

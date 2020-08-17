@@ -1,9 +1,11 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, Validate } from 'class-validator';
+import { IdRoleExist } from '../../../validators/role.validator';
 
 export class RoleCreateRequest {
   @IsString()
   @IsNotEmpty()
   name: string;
+
   @IsString()
   @IsNotEmpty()
   description: string;
@@ -12,7 +14,7 @@ export class RoleCreateRequest {
 }
 
 export class RoleGetSingleRequest {
-  @IsString()
+  @Validate(IdRoleExist)
   id: string;
 }
 
@@ -20,15 +22,17 @@ export class RoleUpdateRequest {
   @IsString()
   @IsNotEmpty()
   name: string;
+
   @IsString()
   @IsNotEmpty()
   description: string;
+
   @IsString()
   @IsNotEmpty()
   status: string;
 }
 
 export class RoleDeleteRequest {
-  @IsString()
+  @Validate(IdRoleExist)
   id: string;
 }

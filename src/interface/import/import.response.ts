@@ -8,7 +8,7 @@ export interface ImportResponseInterface {
   createdDate?: string;
   accountantUserId: string;
   accConfirmedDate: number;
-  stockkeeperUserId: string;
+  stockKeeperUserId: string;
   stockConfirmedDate: number;
   createdAt?: number;
   updatedAt?: number;

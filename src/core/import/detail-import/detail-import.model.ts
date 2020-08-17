@@ -7,6 +7,7 @@ export const DetailImportSchema = new mongoose.Schema({
   unitProductId: String,
   quantity: Number,
   price: Number,
+  deletedAt: Number,
 });
 // Crate model at Nestjs extends mongoose.Document -> Document at Mongo inject into it
 // Use this model -> create Document on Mongo
@@ -16,4 +17,5 @@ export interface DetailImportInterface extends mongoose.Document {
   unitProductId: string;
   quantity: number;
   price: number;
+  deletedAt?: number;
 }

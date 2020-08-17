@@ -6,8 +6,8 @@ import { RoleResponseInterface } from '../../../interface/user/role/role.respons
 
 @Injectable()
 export class RoleService {
-  constructor(@InjectModel('roles') private readonly model: Model<RoleInterface>) {
-  }
+
+  constructor(@InjectModel('roles') private readonly model: Model<RoleInterface>) {}
 
   /* additional functions */
   async findRole(id: string): Promise<RoleInterface> {
@@ -21,6 +21,10 @@ export class RoleService {
     if(!roleDoc) throw new NotFoundException(` RoleID: ${id} is not exist `); // 404
 
     return roleDoc;
+  }
+
+  async checkExist(id: string): Promise<boolean> {
+    return await this.model.exists({ _id : id});
   }
 
   /* Main functions */

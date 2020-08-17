@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, Validate } from 'class-validator';
+import { IdCategoryExist } from '../../../validators/category.validator';
 
 export class CategoryCreateRequest {
   @IsString()
@@ -9,19 +10,20 @@ export class CategoryCreateRequest {
 }
 
 export class CategoryGetSingleRequest {
-  @IsString()
+  @Validate(IdCategoryExist)
   id: string;
 }
 
 export class CategoryUpdateRequest {
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   status?: string;
 }
 
 export class CategoryDeleteRequest {
-  @IsString()
+  @Validate(IdCategoryExist)
   id: string;
 }
 

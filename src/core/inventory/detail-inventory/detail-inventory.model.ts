@@ -7,6 +7,7 @@ export const DetailInventorySchema = new mongoose.Schema({
   unitProductId: String,
   quantity: Number,
   price: Number,
+  deletedAt: Number,
 });
 
 // Create model at Nestjs extends mongoose.Document -> Document at Mongo inject into it
@@ -18,4 +19,5 @@ export interface DetailInventoryInterface extends mongoose.Document {
   unitProductId: string;
   quantity: number;
   price: number;
+  deletedAt?: number;
 }

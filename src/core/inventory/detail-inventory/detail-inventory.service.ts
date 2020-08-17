@@ -1,18 +1,13 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UnitProductService } from '../../unit-product/unit-product.service';
-import { ProductService } from '../../product/product.service';
 import { DetailInventoryInterface } from './detail-inventory.model';
 import { DetailInventoryResponseInterface } from '../../../interface/inventory/detail-inventory/detail-inventory.response';
-import { InventoryService } from '../inventory.service';
 
 @Injectable()
 export class DetailInventoryService {
-  constructor(@InjectModel('detail-inventories') private readonly model: Model<DetailInventoryInterface>,
-              private readonly inventoryService: InventoryService,
-              private readonly productService: ProductService,
-              private readonly unitProductService: UnitProductService) {}
+
+  constructor(@InjectModel('detail-inventories') private readonly model: Model<DetailInventoryInterface>,) {}
 
   /* Additional functions */
   async findDetail(id: string): Promise<DetailInventoryInterface> {
@@ -28,18 +23,17 @@ export class DetailInventoryService {
     return detailDoc;
   }
 
+  async checkExist(id: string): Promise<boolean> {
+    return await this.model.exists({ _id : id});
+  }
+
   /* Main functions */
   async create( inventoryId: string,
                 productId: string,
                 unitProductId: string,
                 quantity: number,
-                price: number): Promise<DetailInventoryResponseInterface> {
-    // Check Inventory is existing
-    await this.inventoryService.findInventory(inventoryId);
-    // Check Product is existing
-    await this.productService.findProduct(productId);
-    // Check Unit-Product is existing
-    await this.unitProductService.findUnitProduct(unitProductId);
+                price: number ): Promise<DetailInventoryResponseInterface> {
+
     try {
       // Create new inventory document
       const newDetail = new this.model({inventoryId, productId, unitProductId, quantity, price});
@@ -65,19 +59,18 @@ export class DetailInventoryService {
 
   async delete(id: string): Promise<boolean> {
     // Check inventory is existing
-    await this.findDetail(id);
+    const detail = await this.findDetail(id);
     try {
-      // Then delete
-      await this.model.deleteOne({_id: id}).exec();
+      // Add deletedAt field
+      detail.deletedAt = Date.now();
+      await detail.save();
       return true;
     } catch(e) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
     }
   }
 
-  async getDetail(inventoryId: string): Promise<DetailInventoryInterface[]> {
-    // Check inventory is existing
-    await this.inventoryService.findInventory(inventoryId);
+  async getDetailInventory(inventoryId: string): Promise<DetailInventoryInterface[]> {
     try {
       // Then find documents that same inventoryId
       return await this.model.find({ inventoryId : inventoryId }).exec();

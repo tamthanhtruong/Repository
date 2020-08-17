@@ -1,18 +1,13 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UnitProductService } from '../../unit-product/unit-product.service';
-import { ProductService } from '../../product/product.service';
 import { DetailExportInterface } from './detail-export.model';
-import { ExportService } from '../export.service';
 import { DetailExportResponseInterface } from '../../../interface/export/detail-export/detail-export.response';
 
 @Injectable()
 export class DetailExportService {
-  constructor(@InjectModel('detail-exports') private readonly model: Model<DetailExportInterface>,
-              private readonly exportService: ExportService,
-              private readonly productService: ProductService,
-              private readonly unitProductService: UnitProductService) {}
+
+  constructor(@InjectModel('detail-exports') private readonly model: Model<DetailExportInterface>,) {}
 
   /* Additional functions */
   async findDetail(id: string): Promise<DetailExportInterface> {
@@ -28,14 +23,18 @@ export class DetailExportService {
     return detailDoc;
   }
 
+  async checkExist(id: string): Promise<boolean> {
+    return await this.model.exists({ _id : id});
+  }
+
   /* Main functions */
-  async create( exportId: string, productId: string, unitProductId: string, quantity: number, price: number): Promise<DetailExportResponseInterface> {
-    // Check Export is existing
-    await this.exportService.findExport(exportId);
-    // Check Product is existing
-    await this.productService.findProduct(productId);
-    // Check Unit-Product is existing
-    await this.unitProductService.findUnitProduct(unitProductId);
+  async create(
+                exportId: string,
+                productId: string,
+                unitProductId: string,
+                quantity: number,
+                price: number): Promise<DetailExportResponseInterface> {
+
     try {
       // Create new export document
       const newDetail = new this.model({exportId, productId, unitProductId, quantity, price});
@@ -61,19 +60,18 @@ export class DetailExportService {
 
   async delete(id: string): Promise<boolean> {
     // Check export is existing
-    await this.findDetail(id);
+    const detail = await this.findDetail(id);
     try {
-      // Then delete
-      await this.model.deleteOne({_id: id}).exec();
+      // Add deletedAt field
+      detail.deletedAt = Date.now();
+      await detail.save();
       return true;
     } catch(e) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
     }
   }
 
-  async getDetail(exportId: string): Promise<DetailExportInterface[]> {
-    // Check export is existing
-    await this.exportService.findExport(exportId);
+  async getDetailExport(exportId: string): Promise<DetailExportInterface[]> {
     try {
       // Then find documents that same exportId
       return await this.model.find({ exportId : exportId }).exec();

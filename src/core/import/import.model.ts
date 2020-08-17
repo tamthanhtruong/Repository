@@ -10,7 +10,7 @@ export const ImportSchema = new mongoose.Schema({
   createdDate: { type: Number, default: Date.now },
   accountantUserId: String,
   accConfirmedDate: Number,
-  stockkeeperUserId: String,
+  stockKeeperUserId: String,
   stockConfirmedDate: Number,
   createdAt: { type: Number, default: Date.now },
   updatedAt: { type: Number, default: Date.now },
@@ -28,7 +28,7 @@ export interface ImportInterface extends mongoose.Document {
   createdDate?: string;
   accountantUserId: string;
   accConfirmedDate: number;
-  stockkeeperUserId: string;
+  stockKeeperUserId: string;
   stockConfirmedDate: number;
   createdAt?: number;
   updatedAt?: number;

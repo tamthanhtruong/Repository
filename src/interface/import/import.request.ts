@@ -1,31 +1,33 @@
 import { IsNotEmpty, IsNumber, IsString, Validate } from 'class-validator';
 import { IdUserExist } from '../../validators/user.validator';
+import { IdImportExist } from '../../validators/import.validator';
 
 export class ImportCreateRequest {
   @IsString()
   @IsNotEmpty()
   shipper: string;
+
   @IsNumber()
   @IsNotEmpty()
   invoiceNumber: number;
+
   @IsString()
   @IsNotEmpty()
   note: string;
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdUserExist)
   createdUserId: string;
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdUserExist)
   accountantUserId: string;
+
   @IsNumber()
   @IsNotEmpty()
   accConfirmedDate: number;
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdUserExist)
-  stockkeeperUserId: string;
+  stockKeeperUserId: string;
+
   @IsNumber()
   @IsNotEmpty()
   stockConfirmedDate: number;
@@ -34,7 +36,7 @@ export class ImportCreateRequest {
 }
 
 export class ImportGetSingleRequest {
-  @IsString()
+  @Validate(IdImportExist)
   id: string;
 }
 
@@ -42,36 +44,38 @@ export class ImportUpdateRequest {
   @IsString()
   @IsNotEmpty()
   shipper: string;
+
   @IsNumber()
   @IsNotEmpty()
   invoiceNumber: number;
+
   @IsString()
   @IsNotEmpty()
   note: string;
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdUserExist)
   createdUserId: string;
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdUserExist)
   accountantUserId: string;
+
   @IsNumber()
   @IsNotEmpty()
   accConfirmedDate: number;
-  @IsString()
-  @IsNotEmpty()
+
   @Validate(IdUserExist)
-  stockkeeperUserId: string;
+  stockKeeperUserId: string;
+
   @IsNumber()
   @IsNotEmpty()
   stockConfirmedDate: number;
+
   @IsString()
   @IsNotEmpty()
   status: string;
 }
 
 export class ImportDeleteRequest {
-  @IsString()
+  @Validate(IdImportExist)
   id: string;
 }

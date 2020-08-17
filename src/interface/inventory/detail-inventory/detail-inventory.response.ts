@@ -5,4 +5,5 @@ export interface DetailInventoryResponseInterface {
   unitProductId: string;
   quantity: number;
   price: number;
+  deletedAt?: number;
 }

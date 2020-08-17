@@ -1,14 +1,13 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from "mongoose";
-import { UserService } from '../user/user.service';
 import { InventoryInterface } from './inventory.model';
 import { InventoryResponseInterface } from '../../interface/inventory/inventory.response';
 
 @Injectable()
 export class InventoryService {
-  constructor(@InjectModel('inventories') private readonly model: Model<InventoryInterface>,
-              private readonly userService: UserService) {}
+
+  constructor(@InjectModel('inventories') private readonly model: Model<InventoryInterface>,) {}
 
   /* Additional functions */
   async findInventory(id: string): Promise<InventoryInterface> {
@@ -24,14 +23,15 @@ export class InventoryService {
     return inventoryDoc;
   }
 
+  async checkExist(id: string): Promise<boolean> {
+    return await this.model.exists({ _id : id});
+  }
+
   /* Main functions */
   async create( invoiceNumber: number,
                 note: string,
                 createdUserId: string,
-                status: string) {
-
-    // Check createdUser is existing
-    await this.userService.findUser(createdUserId);
+                status: string ) {
     try {
       // Create new inventory document
       const newInventory = new this.model({invoiceNumber,note,createdUserId,status});
@@ -63,8 +63,6 @@ export class InventoryService {
 
     // Find inventory document by id
     const findInventory = await this.findInventory(id);
-    // Check createdUser is existing
-    await this.userService.findUser(createdUserId);
     try {
       // Then update
       findInventory.invoiceNumber = invoiceNumber;

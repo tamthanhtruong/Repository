@@ -4,4 +4,5 @@ export interface DetailImportResponseInterface {
   unitProductId: string;
   quantity: number;
   price: number;
+  deletedAt?: number;
 }

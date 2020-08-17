@@ -6,6 +6,7 @@ import { UnitProductResponseInterface } from '../../interface/unit-product/unit-
 
 @Injectable()
 export class UnitProductService {
+
   constructor(@InjectModel('Unit-Product') private readonly model: Model<UnitProductInterface>) {}
 
   /* Additional functions */
@@ -22,9 +23,12 @@ export class UnitProductService {
     return unitDoc;
   }
 
+  async checkExist(id: string): Promise<boolean> {
+    return await this.model.exists({ _id : id});
+  }
+
   /* Main functions */
   async create(name: string): Promise<UnitProductResponseInterface> {
-
     try {
       // Create the new unit-product
       const newUnit = new this.model({name});

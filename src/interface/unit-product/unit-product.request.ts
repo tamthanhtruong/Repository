@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, Validate } from 'class-validator';
+import { IdUnitProductExist } from '../../validators/unit-product.validator';
 
 export class UnitProductCreateRequest {
   @IsString()
@@ -7,7 +8,7 @@ export class UnitProductCreateRequest {
 }
 
 export class UnitProductGetSingleRequest {
-  @IsString()
+  @Validate(IdUnitProductExist)
   id: string;
 }
 
@@ -18,6 +19,6 @@ export class UnitProductUpdateRequest {
 }
 
 export class UnitProductDeleteRequest {
-  @IsString()
+  @Validate(IdUnitProductExist)
   id: string;
 }
