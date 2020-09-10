@@ -3,6 +3,6 @@ export interface CategoryResponseInterface {
   name: string;
   createdAt?: number;
   updatedAt?: number;
-  status: number;
+  status: string;
   deletedAt?: number;
 }
