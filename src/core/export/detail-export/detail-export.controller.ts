@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import {
   DetailExportCreateRequest,
   DetailExportDeleteRequest,
-  DetailExportGetDetailExportRequest,
+  DetailExportGetListExportRequest,
   DetailExportGetSingleRequest,
 } from '../../../interface/export/detail-export/detail-export.request';
 import { DetailExportResponseInterface } from '../../../interface/export/detail-export/detail-export.response';
@@ -13,38 +13,65 @@ export class DetailExportController {
   constructor(private readonly service: DetailExportService) {
   }
 
-  @Post()
+  /** Create Detail-Export
+   *
+   * @param req
+   *
+   * @return DetailExportResponseInterface
+   */
+  @Post('create')
   async create(@Body() req: DetailExportCreateRequest): Promise<DetailExportResponseInterface> {
     return await this.service.create( req.exportId, req.productId, req.unitProductId, req.quantity, req.price );
   }
 
-  @Get()
+  /** Get All Detail-Export
+   *
+   * @return DetailExportResponseInterface[]
+   */
+  @Get('get-all')
   async getAll(): Promise<DetailExportResponseInterface[]> {
     return await this.service.getAll();
   }
 
-  @Get(':id')
-  async getSingle(@Param() req: DetailExportGetSingleRequest) {
+  /** Get Single Detail-Export
+   *
+   * @param req
+   *
+   * @return DetailExportResponseInterface
+   */
+  @Get('get-single/:id')
+  async getSingle(@Param() req: DetailExportGetSingleRequest): Promise<DetailExportResponseInterface> {
       return await this.service.getSingle(req.id);
   }
 
-  @Delete(':id')
+  /** Soft Delete Detail-Export
+   *
+   * @param req
+   *
+   * @return boolean
+   */
+  @Delete('delete/:id')
   async delete(@Param() req: DetailExportDeleteRequest): Promise<boolean> {
     return await this.service.delete(req.id);
   }
 
-  @Get('getDetailExport/:id')
-  async getDetailExport(@Param() req: DetailExportGetDetailExportRequest): Promise<DetailExportResponseInterface[]> {
-    return await this.service.getDetailExport(req.id);
+  /** Get List Export
+   *
+   * @param req
+   *
+   * @return DetailExportResponseInterface[]
+   */
+  @Get('get-list-export/:id')
+  async getListExport(@Param() req: DetailExportGetListExportRequest): Promise<DetailExportResponseInterface[]> {
+    return await this.service.getListExport(req.id);
   }
 
-  @Get('get-all/soft-deleted')
+  /** Get All Soft-Delete-Detail-Export
+   *
+   * @return DetailExportResponseInterface[]
+   */
+  @Get('get-all-soft-delete')
   async getAllSoftDelete(): Promise<DetailExportResponseInterface[]> {
     return await this.service.getAllSoftDelete();
-  }
-
-  @Get('create/real-dummy-data')
-  async realDummyData() {
-    return await this.service.realDummyData();
   }
 }

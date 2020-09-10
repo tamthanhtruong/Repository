@@ -3,48 +3,75 @@ import { DetailImportService } from './detail-import.service';
 import {
   DetailImportCreateRequest,
   DetailImportDeleteRequest,
-  DetailImportGetDetailImportRequest,
+  DetailImportGetListImportRequest,
   DetailImportGetSingleRequest,
 } from '../../../interface/import/detail-import/detail-import.request';
 import { DetailImportResponseInterface } from '../../../interface/import/detail-import/detail-import.response';
 
 @Controller('detail-import')
 export class DetailImportController {
-  constructor(private readonly service: DetailImportService) {
-  }
 
-  @Post()
+  constructor(private readonly service: DetailImportService) {}
+
+  /** Create Detail-Import
+   *
+   * @param req
+   *
+   * @return DetailImportResponseInterface
+   */
+  @Post('create')
   async create(@Body() req: DetailImportCreateRequest): Promise<DetailImportResponseInterface> {
     return await this.service.create( req.importId, req.productId, req.unitProductId, req.quantity, req.price );
   }
 
-  @Get()
+  /** Get All Detail-Import
+   *
+   * @return DetailImportResponseInterface[]
+   */
+  @Get('get-all')
   async getAll(): Promise<DetailImportResponseInterface[]> {
     return await this.service.getAll();
   }
 
-  @Get(':id')
+  /** Get Single Detail-Import
+   *
+   * @param req
+   *
+   * @return DetailImportResponseInterface
+   */
+  @Get('get-single/:id')
   async getSingle(@Param() req: DetailImportGetSingleRequest): Promise<DetailImportResponseInterface> {
       return await this.service.getSingle(req.id);
   }
 
-  @Delete(':id')
+  /** Soft Delete Detail-Import
+   *
+   * @param req
+   *
+   * @return boolean
+   */
+  @Delete('delete/:id')
   async delete(@Param() req: DetailImportDeleteRequest): Promise<boolean> {
     return await this.service.delete(req.id);
   }
 
-  @Get('getDetailImport/:id')
-  async getDetailImport(@Param() req: DetailImportGetDetailImportRequest): Promise<DetailImportResponseInterface[]>  {
-    return await this.service.getDetailImport(req.id);
+  /** Get List Import
+   *
+   * @param req
+   *
+   * @return DetailImportResponseInterface[]
+   */
+  @Get('get-list-import/:id')
+  async getListImport(@Param() req: DetailImportGetListImportRequest): Promise<DetailImportResponseInterface[]>  {
+    return await this.service.getListImport(req.id);
   }
 
-  @Get('get-all/soft-deleted')
+  /** Get All Soft-Delete-Detail-Import
+   *
+   * @return DetailImportResponseInterface[]
+   */
+  @Get('get-all-soft-delete')
   async getAllSoftDelete(): Promise<DetailImportResponseInterface[]> {
     return await this.service.getAllSoftDelete();
-  }
-
-  @Get('create/real-dummy-data')
-  async realDummyData() {
-    return await this.service.realDummyData();
   }
 }

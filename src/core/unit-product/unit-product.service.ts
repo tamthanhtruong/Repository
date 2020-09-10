@@ -13,13 +13,11 @@ export class UnitProductService {
   async findUnitProduct(id: string): Promise<UnitProductInterface> {
     let unitDoc;
     try {
-      // Find Unit-product document by id
-      unitDoc = await this.model.findById(id).exec();
+      unitDoc =  await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException(` UnitProductID: ${id} is not exist `); // 404
+      throw new NotFoundException(` UnitProductID: ${id} is not exist `);
     }
-    if(!unitDoc) throw new NotFoundException(` UnitProductID: ${id} is not exist `); // 404
-
+    if(!unitDoc) throw new NotFoundException(` UnitProductID: ${id} is not exist `);
     return unitDoc;
   }
 
@@ -30,52 +28,44 @@ export class UnitProductService {
   /* Main functions */
   async create(name: string): Promise<UnitProductResponseInterface> {
     try {
-      // Create the new unit-product
       const newUnit = new this.model({name});
       return await newUnit.save();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async getAll(): Promise<UnitProductResponseInterface[]> {
     try {
-      // Find documents
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async getSingle(id: string): Promise<UnitProductResponseInterface> {
-      // Finds a single document by id
       return await this.findUnitProduct(id);
   }
 
   async update(id: string, name: string): Promise<UnitProductResponseInterface> {
-    // Find unit-product document by id
     const unitProduct = await this.findUnitProduct(id);
     try {
-      // Then update
       unitProduct.name = name;
       unitProduct.updatedAt = Date.now();
-
       return await unitProduct.save();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async delete(id: string): Promise<boolean> {
-    // Find unit-product document by id
     const unitProduct = await this.findUnitProduct(id);
     try {
-      // Add deletedAt field
       unitProduct.deletedAt = Date.now();
       await unitProduct.save();
       return true;
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -83,7 +73,7 @@ export class UnitProductService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch (e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

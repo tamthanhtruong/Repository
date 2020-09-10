@@ -11,7 +11,13 @@ import { ImportResponseInterface } from '../../interface/import/import.response'
 export class ImportController {
   constructor(private readonly service: ImportService) {}
 
-  @Post()
+  /** Create Import
+   *
+   * @param req
+   *
+   * @return ImportResponseInterface
+   */
+  @Post('create')
   async create(@Body() req: ImportCreateRequest): Promise<ImportResponseInterface> {
     return await this.service.create( req.shipper,
                                       req.invoiceNumber,
@@ -24,17 +30,34 @@ export class ImportController {
                                       req.status);
   }
 
-  @Get()
+  /** Get All Import
+   *
+   * @return ImportResponseInterface[]
+   */
+  @Get('get-all')
   async getAll(): Promise<ImportResponseInterface[]> {
     return await this.service.getAll();
   }
 
-  @Get(':id')
+  /** Get Single Import
+   *
+   * @param req
+   *
+   * @return ImportResponseInterface
+   */
+  @Get('get-single/:id')
   async getSingle(@Param() req: ImportGetSingleRequest): Promise<ImportResponseInterface> {
       return await this.service.getSingle(req.id);
   }
 
-  @Patch(':id')
+  /** Update Import
+   *
+   * @param id
+   * @param req
+   *
+   * @return ImportResponseInterface
+   */
+  @Patch('update/:id')
   async update(@Param('id') id: string, @Body() req: ImportUpdateRequest): Promise<ImportResponseInterface> {
     return await this.service.update( id,
                                       req.shipper,
@@ -48,18 +71,23 @@ export class ImportController {
                                       req.status);
   }
 
-  @Delete(':id')
+  /** Soft Delete Import
+   *
+   * @param req
+   *
+   * @return boolean
+   */
+  @Delete('delete/:id')
   async delete(@Param() req: ImportDeleteRequest): Promise<boolean> {
     return await this.service.delete(req.id);
   }
 
-  @Get('get-all/soft-deleted')
+  /** Get All Soft-Delete-Import
+   *
+   * @return ImportResponseInterface[]
+   */
+  @Get('get-all-soft-delete')
   async getAllSoftDelete(): Promise<ImportResponseInterface[]> {
     return await this.service.getAllSoftDelete();
-  }
-
-  @Get('create/real-dummy-data')
-  async realDummyData() {
-    return await this.service.realDummyData();
   }
 }

@@ -11,7 +11,13 @@ import { ExportService } from './export.service';
 export class ExportController {
   constructor(private readonly service: ExportService) {}
 
-  @Post()
+  /** Create Export
+   *
+   * @param req
+   *
+   * @return ExportResponseInterface
+   */
+  @Post('create')
   async create(@Body() req: ExportCreateRequest): Promise<ExportResponseInterface> {
     return await this.service.create( req.receiver,
                                       req.invoiceNumber,
@@ -24,18 +30,35 @@ export class ExportController {
                                       req.status);
   }
 
-  @Get()
+  /** Get All Export
+   *
+   * @return ExportResponseInterface[]
+   */
+  @Get('get-all')
   async getAll(): Promise<ExportResponseInterface[]> {
     return await this.service.getAll();
   }
 
-  @Get(':id')
+  /** Get Single Export
+   *
+   * @param req
+   *
+   * @return ExportResponseInterface
+   */
+  @Get('get-single/:id')
   async getSingle(@Param() req: ExportGetSingleRequest): Promise<ExportResponseInterface> {
       return await this.service.getSingle(req.id);
   }
 
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() req: ExportUpdateRequest) {
+  /** Update Export
+   *
+   * @param id
+   * @param req
+   *
+   * @return ExportResponseInterface
+   */
+  @Patch('update/:id')
+  async update(@Param('id') id: string, @Body() req: ExportUpdateRequest): Promise<ExportResponseInterface>{
     return await this.service.update( id,
                                       req.receiver,
                                       req.invoiceNumber,
@@ -47,19 +70,23 @@ export class ExportController {
                                       req.stockConfirmedDate,
                                       req.status);
   }
-
-  @Delete(':id')
+  /** Soft Delete Export
+   *
+   * @param req
+   *
+   * @return boolean
+   */
+  @Delete('delete/:id')
   async delete(@Param() req: ExportDeleteRequest): Promise<boolean> {
     return await this.service.delete(req.id);
   }
 
-  @Get('get-all/soft-deleted')
+  /** Get All Soft-Delete-Export
+   *
+   * @return ExportResponseInterface[]
+   */
+  @Get('get-all-soft-delete')
   async getAllSoftDelete(): Promise<ExportResponseInterface[]> {
     return await this.service.getAllSoftDelete();
-  }
-
-  @Get('create/real-dummy-data')
-  async realDummyData() {
-    return await this.service.realDummyData();
   }
 }

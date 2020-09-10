@@ -70,8 +70,8 @@ describe('Detail-Inventory Service', () => {
 
     it('Get Detail Inventory', async () => {
       const result = [detailInventoryData];
-      jest.spyOn(detailInventoryService, 'getDetailInventory').mockResolvedValue(result);
-      expect(await detailInventoryService.getDetailInventory('5f213aa95be470217c791824')).toStrictEqual(result);
+      jest.spyOn(detailInventoryService, 'getListInventory').mockResolvedValue(result);
+      expect(await detailInventoryService.getListInventory('5f213aa95be470217c791824')).toStrictEqual(result);
     });
 
     it('Get All Soft Delete Detail-Inventory', async () => {

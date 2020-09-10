@@ -13,13 +13,11 @@ export class ImportService {
   async findImport(id: string): Promise<ImportInterface> {
     let importDoc;
     try {
-      // Find Import document by id
        importDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException(` ImportID: ${id} is not exist `); // 404
+      throw new NotFoundException(` ImportID: ${id} is not exist `);
     }
-    if(!importDoc) throw new NotFoundException(` ImportID: ${id} is not exist `); // 404
-
+    if(!importDoc) throw new NotFoundException(` ImportID: ${id} is not exist `);
     return importDoc;
   }
 
@@ -39,25 +37,22 @@ export class ImportService {
                 status: string ): Promise<ImportResponseInterface> {
 
     try {
-      // Create new import document
       const newImport = new this.model({shipper,invoiceNumber,note,createdUserId,accountantUserId,accConfirmedDate,stockKeeperUserId,stockConfirmedDate,status});
       return await newImport.save();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async getAll(): Promise<ImportResponseInterface[]> {
     try {
-      // Find documents
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async getSingle(id: string): Promise<ImportResponseInterface> {
-      // Finds a single document by id
       return await this.findImport(id);
   }
 
@@ -72,10 +67,8 @@ export class ImportService {
                  stockConfirmedDate: number,
                  status: string ): Promise<ImportResponseInterface> {
 
-    // Find import document by id
     const importDoc = await this.findImport(id);
     try {
-      // Then update
       importDoc.shipper = shipper;
       importDoc.invoiceNumber = invoiceNumber;
       importDoc.note = note;
@@ -89,20 +82,18 @@ export class ImportService {
 
       return await importDoc.save();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async delete(id: string): Promise<boolean> {
-    // Find import document by id
     const importDoc =  await this.findImport(id);
     try {
-      // Add deletedAt field
       importDoc.deletedAt = Date.now();
       await importDoc.save();
       return true;
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -110,122 +101,7 @@ export class ImportService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch (e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
-  async realDummyData() {
-    const arrData = [{
-      "shipper" : "Nhật",
-      "invoiceNumber" : 2,
-      "note" : "Giao hàng",
-      "createdUserId" : "5f3e2a488720931d906139bd",
-      "accountantUserId" : "5f3e2b01aa5c8b2f64fb1e54",
-      "accConfirmedDate" : 2020,
-      "stockKeeperUserId" : "5f3e2b01aa5c8b2f64fb1e55",
-      "stockConfirmedDate" : 2020,
-      "status" : "Lock"
-    },
-      {
-        "shipper" : "Nam",
-        "invoiceNumber" : 2,
-        "note" : "Giao hàng",
-        "createdUserId" : "5f3e2a488720931d906139bd",
-        "accountantUserId" : "5f3e2b01aa5c8b2f64fb1e54",
-        "accConfirmedDate" : 2020,
-        "stockKeeperUserId" : "5f3e2b01aa5c8b2f64fb1e55",
-        "stockConfirmedDate" : 2020,
-        "status" : "Lock"
-      }, {
-        "shipper" : "Hòa",
-        "invoiceNumber" : 2,
-        "note" : "Giao hàng",
-        "createdUserId" : "5f3e2a488720931d906139bd",
-        "accountantUserId" : "5f3e2b01aa5c8b2f64fb1e54",
-        "accConfirmedDate" : 2020,
-        "stockKeeperUserId" : "5f3e2b01aa5c8b2f64fb1e55",
-        "stockConfirmedDate" : 2020,
-        "status" : "Imported"
-      }, {
-        "shipper" : "Hải",
-        "invoiceNumber" : 2,
-        "note" : "Giao hàng",
-        "createdUserId" : "5f3e2a488720931d906139bd",
-        "accountantUserId" : "5f3e2b01aa5c8b2f64fb1e54",
-        "accConfirmedDate" : 2020,
-        "stockKeeperUserId" : "5f3e2b01aa5c8b2f64fb1e55",
-        "stockConfirmedDate" : 2020,
-        "status" : "Imported"
-      }, {
-        "shipper" : "Tiến",
-        "invoiceNumber" : 2,
-        "note" : "Giao hàng",
-        "createdUserId" : "5f3e2a488720931d906139bd",
-        "accountantUserId" : "5f3e2b01aa5c8b2f64fb1e54",
-        "accConfirmedDate" : 2020,
-        "stockKeeperUserId" : "5f3e2b01aa5c8b2f64fb1e55",
-        "stockConfirmedDate" : 2020,
-        "status" : "Imported"
-      }, {
-        "shipper" : "Kim",
-        "invoiceNumber" : 2,
-        "note" : "Giao hàng",
-        "createdUserId" : "5f3e2a488720931d906139bd",
-        "accountantUserId" : "5f3e2b01aa5c8b2f64fb1e54",
-        "accConfirmedDate" : 2020,
-        "stockKeeperUserId" : "5f3e2b01aa5c8b2f64fb1e55",
-        "stockConfirmedDate" : 2020,
-        "status" : "Lock"
-      }, {
-        "shipper" : "Long",
-        "invoiceNumber" : 2,
-        "note" : "Giao hàng",
-        "createdUserId" : "5f3e2a488720931d906139bd",
-        "accountantUserId" : "5f3e2b01aa5c8b2f64fb1e54",
-        "accConfirmedDate" : 2020,
-        "stockKeeperUserId" : "5f3e2b01aa5c8b2f64fb1e55",
-        "stockConfirmedDate" : 2020,
-        "status" : "Paid"
-      }, {
-        "shipper" : "Hùng",
-        "invoiceNumber" : 2,
-        "note" : "Giao hàng",
-        "createdUserId" : "5f3e2a488720931d906139bd",
-        "accountantUserId" : "5f3e2b01aa5c8b2f64fb1e54",
-        "accConfirmedDate" : 2020,
-        "stockKeeperUserId" : "5f3e2b01aa5c8b2f64fb1e55",
-        "stockConfirmedDate" : 2020,
-        "status" : "Paid"
-      }, {
-        "shipper" : "Nhật",
-        "invoiceNumber" : 2,
-        "note" : "Giao hàng",
-        "createdUserId" : "5f3e2a488720931d906139bd",
-        "accountantUserId" : "5f3e2b01aa5c8b2f64fb1e54",
-        "accConfirmedDate" : 2020,
-        "stockKeeperUserId" : "5f3e2b01aa5c8b2f64fb1e55",
-        "stockConfirmedDate" : 2020,
-        "status" : "Open"
-      }, {
-        "shipper" : "Nhật",
-        "invoiceNumber" : 2,
-        "note" : "Giao hàng",
-        "createdUserId" : "5f3e2a488720931d906139bd",
-        "accountantUserId" : "5f3e2b01aa5c8b2f64fb1e54",
-        "accConfirmedDate" : 2020,
-        "stockKeeperUserId" : "5f3e2b01aa5c8b2f64fb1e55",
-        "stockConfirmedDate" : 2020,
-        "status" : "Open"
-      }
-    ];
-    let i = 0;
-    while(i<10) {
-      await this.model.insertMany(arrData, function(err) {
-        if(err) throw err;
-      });
-      i++;
-    }
-
-    return true;
-  };
 }

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CategoryInterface } from './category.model';
@@ -13,13 +13,11 @@ export class CategoryService {
   async findCategory(id: string): Promise<CategoryInterface> {
     let categoryDoc;
     try {
-      // Find Category document by id
       categoryDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException(` CategoryID: ${id} is not exist `); // 404
+      throw new NotFoundException(` CategoryID: ${id} is not exist `);
     }
-    if(!categoryDoc)  throw new NotFoundException(` CategoryID: ${id} is not exist `); // 404
-
+    if(!categoryDoc) throw new NotFoundException(` CategoryID: ${id} is not exist `);
     return categoryDoc;
   }
 
@@ -30,53 +28,46 @@ export class CategoryService {
   /* Main functions */
   async create(name: string, status: string): Promise<CategoryResponseInterface> {
     try {
-      // Create the new category
       const newCategory = new this.model({name, status});
       return await newCategory.save();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN); //403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async getAll(): Promise<CategoryResponseInterface[]> {
     try {
-      // Find documents
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async getSingle(id: string): Promise<CategoryResponseInterface> {
-      // Finds a single document by id
       return await this.findCategory(id);
   }
 
   async update(id: string, name : string, status: string): Promise<CategoryResponseInterface> {
-    // Find Category document by id
     const category = await this.findCategory(id);
     try {
-      // Then update
       category.name = name;
       category.status = status;
       category.updatedAt = Date.now();
 
       return await category.save();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async delete(id: string): Promise<boolean> {
-    // Find Category document by id
     const category = await this.findCategory(id);
     try {
-      // Add deletedAt field
       category.deletedAt = Date.now();
       await category.save();
       return true;
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -84,7 +75,7 @@ export class CategoryService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch (e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

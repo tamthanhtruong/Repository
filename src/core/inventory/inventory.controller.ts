@@ -12,38 +12,66 @@ export class InventoryController {
   constructor(private readonly service: InventoryService) {
   }
 
-  @Post()
+  /** Create Inventory
+   *
+   * @param req
+   *
+   * @return InventoryResponseInterface
+   */
+  @Post('create')
   async create(@Body() req: InventoryCreateRequest): Promise<InventoryResponseInterface> {
     return await this.service.create(req.invoiceNumber, req.note, req.createdUserId, req.status);
   }
 
-  @Get()
+  /** Get All Inventory
+   *
+   * @return InventoryResponseInterface[]
+   */
+  @Get('get-all')
   async getAll(): Promise<InventoryResponseInterface[]> {
     return await this.service.getAll();
   }
 
-  @Get(':id')
+  /** Get Single Inventory
+   *
+   * @param req
+   *
+   * @return InventoryResponseInterface
+   */
+  @Get('get-single/:id')
   async getSingle(@Param() req: InventoryGetSingleRequest): Promise<InventoryResponseInterface> {
       return await this.service.getSingle(req.id);
   }
 
-  @Patch(':id')
+  /** Update Inventory
+   *
+   * @param id
+   * @param req
+   *
+   * @return InventoryResponseInterface
+   */
+  @Patch('update/:id')
   async update(@Param('id') id: string, @Body() req: InventoryUpdateRequest): Promise<InventoryResponseInterface> {
     return await this.service.update(id, req.invoiceNumber,req.note,req.createdUserId,req.status);
   }
 
-  @Delete(':id')
+  /** Soft Delete Inventory
+   *
+   * @param req
+   *
+   * @return boolean
+   */
+  @Delete('delete/:id')
   async delete(@Param() req: InventoryDeleteRequest): Promise<boolean> {
     return await this.service.delete(req.id);
   }
 
-  @Get('get-all/soft-deleted')
+  /** Get All Soft-Delete-Inventory
+   *
+   * @return InventoryResponseInterface[]
+   */
+  @Get('get-all-soft-delete')
   async getAllSoftDelete(): Promise<InventoryResponseInterface[]> {
     return await this.service.getAllSoftDelete();
-  }
-
-  @Get('create/real-dummy-data')
-  async realDummyData() {
-    return await this.service.realDummyData();
   }
 }

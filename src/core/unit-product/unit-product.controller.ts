@@ -9,32 +9,66 @@ import {
 export class UnitProductController {
   constructor(private readonly service: UnitProductService) {}
 
-  @Post()
+  /** Create Unit-Product
+   *
+   * @param req
+   *
+   * @return UnitProductResponseInterface
+   */
+  @Post('create')
   async create( @Body() req: UnitProductCreateRequest ): Promise<UnitProductResponseInterface> {
     return await this.service.create(req.name);
   }
 
-  @Get()
+  /** Get All Unit-Product
+   *
+   * @return UnitProductResponseInterface[]
+   */
+  @Get('get-all')
   async getAll(): Promise<UnitProductResponseInterface[]> {
       return await this.service.getAll();
   }
 
-  @Get(':id')
+  /** Get Single Unit-Product
+   *
+   * @param req
+   *
+   * @return UnitProductResponseInterface
+   */
+  @Get('get-single/:id')
   async getSingle(@Param() req: UnitProductGetSingleRequest): Promise<UnitProductResponseInterface> {
     return await this.service.getSingle(req.id);
   }
 
-  @Patch(':id')
+
+  /** Update Unit-Product
+   *
+   * @param id
+   * @param req
+   *
+   * @return UnitProductResponseInterface
+   */
+  @Patch('update/:id')
   async update(@Param('id') id: string, @Body() req: UnitProductUpdateRequest): Promise<UnitProductResponseInterface> {
     return await this.service.update(id, req.name);
   }
 
-  @Delete(':id')
+  /** Soft Delete Unit-Product
+   *
+   * @param req
+   *
+   * @return boolean
+   */
+  @Delete('delete/:id')
   async delete(@Param() req: UnitProductDeleteRequest): Promise<boolean> {
       return await this.service.delete(req.id);
   }
 
-  @Get('get-all/soft-deleted')
+  /** Get All Soft-Delete-Unit-Product
+   *
+   * @return UnitProductResponseInterface[]
+   */
+  @Get('get-all-soft-delete')
   async getAllSoftDelete(): Promise<UnitProductResponseInterface[]> {
     return await this.service.getAllSoftDelete();
   }

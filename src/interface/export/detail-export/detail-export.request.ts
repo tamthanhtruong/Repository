@@ -34,7 +34,7 @@ export class DetailExportDeleteRequest {
   id: string;
 }
 
-export class DetailExportGetDetailExportRequest {
+export class DetailExportGetListExportRequest {
   @Validate(IdExportExist)
   id: string;
 }

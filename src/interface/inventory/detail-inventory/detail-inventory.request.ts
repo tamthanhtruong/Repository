@@ -34,7 +34,7 @@ export class DetailInventoryDeleteRequest {
   id: string;
 }
 
-export class DetailInventoryGetDetailInventoryRequest {
+export class DetailInventoryGetListInventoryRequest {
   @Validate(IdInventoryExist)
   id: string;
 }

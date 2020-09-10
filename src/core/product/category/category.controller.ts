@@ -11,32 +11,65 @@ import { CategoryResponseInterface } from '../../../interface/product/category/c
 export class CategoryController {
   constructor(private readonly service: CategoryService) {}
 
-  @Post()
+  /** Create Category
+   *
+   * @param req
+   *
+   * @return CategoryResponseInterface
+   */
+  @Post('create')
   async create(@Body() req: CategoryCreateRequest): Promise<CategoryResponseInterface> {
     return await this.service.create(req.name, req.status);
   }
 
-  @Get()
+  /** Get All Category
+   *
+   * @return CategoryResponseInterface[]
+   */
+  @Get('get-all')
   async getAll(): Promise<CategoryResponseInterface[]> {
     return await this.service.getAll();
   }
 
-  @Get(':id')
+  /** Get Single Category
+   *
+   * @param req
+   *
+   * @return CategoryResponseInterface
+   */
+  @Get('get-single/:id')
   async getSingle(@Param() req: CategoryGetSingleRequest): Promise<CategoryResponseInterface> {
     return await this.service.getSingle(req.id);
   }
 
-  @Patch(':id')
+  /** Update Category
+   *
+   * @param id
+   * @param req
+   *
+   * @return CategoryResponseInterface
+   */
+  @Patch('update/:id')
   async update(@Param('id') id: string, @Body() req: CategoryUpdateRequest): Promise<CategoryResponseInterface> {
     return await this.service.update(id, req.name, req.status);
   }
 
-  @Delete(':id')
+  /** Soft Delete Category
+   *
+   * @param req
+   *
+   * @return boolean
+   */
+  @Delete('delete/:id')
   async delete(@Param() req: CategoryDeleteRequest): Promise<boolean> {
     return await this.service.delete(req.id);
   }
 
-  @Get('get-all/soft-deleted')
+  /** Get All Soft-Delete-Category
+   *
+   * @return CategoryResponseInterface[]
+   */
+  @Get('get-all-soft-delete')
   async getAllSoftDelete(): Promise<CategoryResponseInterface[]> {
     return await this.service.getAllSoftDelete();
   }

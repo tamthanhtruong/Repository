@@ -1,7 +1,6 @@
 import * as mongoose from 'mongoose';
 import { RoleStatusEnum } from '../../../enums/enum';
 
-// create schema by mogoose.Schema()
 export const RoleSchema = new mongoose.Schema({
   name: String,
   description: String,
@@ -11,7 +10,6 @@ export const RoleSchema = new mongoose.Schema({
   deletedAt: Number,
 });
 
-// create interface extends mongoose.Document
 export interface RoleInterface extends mongoose.Document {
   readonly _id: string;
   name: string;

@@ -70,8 +70,8 @@ describe('Detail-Import Service', () => {
 
     it('Get Detail Import', async () => {
       const result = [detailImportData];
-      jest.spyOn(detailImportService, 'getDetailImport').mockResolvedValue(result);
-      expect(await detailImportService.getDetailImport('5f213aa95be470217c791824')).toStrictEqual(result);
+      jest.spyOn(detailImportService, 'getListImport').mockResolvedValue(result);
+      expect(await detailImportService.getListImport('5f213aa95be470217c791824')).toStrictEqual(result);
     });
 
     it('Get All Soft Delete Detail-Import', async () => {

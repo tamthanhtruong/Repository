@@ -1,7 +1,6 @@
 import * as mongoose from 'mongoose';
 import { CategoryStatusEnum } from '../../../enums/enum';
 
-// Khai báo data cho mongoose
 export const CategorySchema = new mongoose.Schema({
   name: String,
   createdAt: { type: Number, default: Date.now },
@@ -14,7 +13,6 @@ export const CategorySchema = new mongoose.Schema({
   deletedAt: Number,
 });
 
-// tạo mô hình để lấy category
 export interface CategoryInterface extends mongoose.Document {
   readonly _id: string;
   name: string;

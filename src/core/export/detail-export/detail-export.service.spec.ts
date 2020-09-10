@@ -68,10 +68,10 @@ describe('Detail-Export Service', () => {
       expect(await detailExportService.delete('5f3964f417898634d85d9574')).toBe(true);
     });
 
-    it('Get Detail Export', async () => {
+    it('Get List Export', async () => {
       const result = [detailExportData];
-      jest.spyOn(detailExportService, 'getDetailExport').mockResolvedValue(result);
-      expect(await detailExportService.getDetailExport('5f213aa95be470217c791824')).toStrictEqual(result);
+      jest.spyOn(detailExportService, 'getListExport').mockResolvedValue(result);
+      expect(await detailExportService.getListExport('5f213aa95be470217c791824')).toStrictEqual(result);
     });
 
     it('Get All Soft Delete Detail-Export', async () => {

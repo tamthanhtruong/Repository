@@ -9,17 +9,15 @@ export class RoleService {
 
   constructor(@InjectModel('roles') private readonly model: Model<RoleInterface>) {}
 
-  /* additional functions */
+  /* Additional functions */
   async findRole(id: string): Promise<RoleInterface> {
     let roleDoc;
     try {
-      // Find Role document by id
       roleDoc = await this.model.findById(id).exec();
     } catch(e) {
-      throw new NotFoundException(` RoleID: ${id} is not exist `); // 404
+      throw new NotFoundException(` RoleID: ${id} is not exist `);
     }
-    if(!roleDoc) throw new NotFoundException(` RoleID: ${id} is not exist `); // 404
-
+    if(!roleDoc) throw new NotFoundException(` RoleID: ${id} is not exist `);
     return roleDoc;
   }
 
@@ -30,33 +28,28 @@ export class RoleService {
   /* Main functions */
   async create(name: string, description: string, status: string): Promise<RoleResponseInterface> {
     try {
-      // Create the new role
       const newRole = new this.model({name, description, status});
       return await newRole.save();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async getAll(): Promise<RoleResponseInterface[]> {
     try {
-      // Find documents
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async getSingle(id: string): Promise<RoleResponseInterface> {
-      // Finds a single document by id
       return await this.findRole(id);
   }
 
   async update(id: string, name:string, description: string, status: string): Promise<RoleResponseInterface> {
-    // Find role document by id
     const role = await this.findRole(id);
     try {
-      // Then update
       role.name = name;
       role.description = description;
       role.status = status;
@@ -64,28 +57,26 @@ export class RoleService {
 
       return await role.save();
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async delete(id: string): Promise<boolean> {
-    // Find role document by id
     const role = await this.findRole(id);
     try {
-      // Add deletedAt property
       role.deletedAt = Date.now();
       await role.save();
       return true;
     } catch(e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async getAllSoftDelete(): Promise<RoleResponseInterface[]> {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
-    } catch (e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);//403
+    } catch(e) {
+      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

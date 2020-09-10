@@ -45,8 +45,3 @@ export interface ProductInterface extends mongoose.Document {
   status: string;
   deletedAt?: number;
 }
-
-// export const productModel = mongoose.model('Product', ProductSchema);
-// module.exports = new mongoose.model('Product', ProductSchema);
-
-// module.exports = productModel;

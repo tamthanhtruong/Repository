@@ -12,32 +12,65 @@ import { RoleResponseInterface } from '../../../interface/user/role/role.respons
 export class RoleController {
   constructor(private readonly service: RoleService) {}
 
-  @Post()
+  /** Create Role
+   *
+   * @param req
+   *
+   * @return RoleResponseInterface
+   */
+  @Post('create')
   async create(@Body() req: RoleCreateRequest ): Promise<RoleResponseInterface> {
     return await this.service.create(req.name, req.description, req.status);
   }
 
-  @Get()
+  /** Get All Role
+   *
+   * @return RoleResponseInterface[]
+   */
+  @Get('get-all')
   async getAll(): Promise<RoleResponseInterface[]> {
     return await this.service.getAll();
   }
 
-  @Get(':id')
+  /** Get Single Role
+   *
+   * @param req
+   *
+   * @return RoleResponseInterface
+   */
+  @Get('get-single/:id')
   async getSingle(@Param() req: RoleGetSingleRequest): Promise<RoleResponseInterface> {
       return await this.service.getSingle(req.id);
   }
 
-  @Patch(':id')
+  /** Update Role
+   *
+   * @param id
+   * @param req
+   *
+   * @return RoleResponseInterface
+   */
+  @Patch('update/:id')
   async update(@Param('id') id: string, @Body() req: RoleUpdateRequest ): Promise<RoleResponseInterface> {
     return await this.service.update(id, req.name, req.description, req.status);
   }
 
-  @Delete(':id')
+  /** Soft Delete Role
+   *
+   * @param req
+   *
+   * @return boolean
+   */
+  @Delete('delete/:id')
   async delete(@Param() req: RoleDeleteRequest): Promise<boolean> {
     return await this.service.delete(req.id);
   }
 
-  @Get('get-all/soft-deleted')
+  /** Get All Soft-Delete-Role
+   *
+   * @return RoleResponseInterface[]
+   */
+  @Get('get-all-soft-delete')
   async getAllSoftDelete(): Promise<RoleResponseInterface[]> {
     return await this.service.getAllSoftDelete();
   }

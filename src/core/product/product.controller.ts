@@ -14,13 +14,18 @@ import {
   ProductUpdateRequest,
 } from '../../interface/product/product.request';
 import { ProductResponseInterface } from '../../interface/product/product.response';
-import { ProductInterface } from './product.model';
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly service: ProductService) {}
 
-  @Post()
+  /** Create Product
+   *
+   * @param req
+   *
+   * @return ProductResponseInterface
+   */
+  @Post('create')
   async create( @Body() req: ProductCreateRequest): Promise<ProductResponseInterface> {
       return await this.service.create( req.categoryId,
                                         req.unitProductId,
@@ -34,17 +39,34 @@ export class ProductController {
                                         req.status);
   }
 
-  @Get()
-  async getAll(): Promise<ProductInterface[]> {
+  /** Get All Product
+   *
+   * @return ProductResponseInterface[]
+   */
+  @Get('get-all')
+  async getAll(): Promise<ProductResponseInterface[]> {
     return await this.service.getAll();
   }
 
-  @Get(':id')
+  /** Get Single Product
+   *
+   * @param req
+   *
+   * @return ProductResponseInterface
+   */
+  @Get('get-single/:id')
   async getSingle(@Param() req: ProductGetSingleRequest): Promise<ProductResponseInterface> {
       return await this.service.getSingle(req.id);
   }
 
-  @Patch(':id')
+  /** Update Product
+   *
+   * @param id
+   * @param req
+   *
+   * @return ProductResponseInterface
+   */
+  @Patch('update/:id')
   async update(@Param('id') id: string, @Body() req: ProductUpdateRequest): Promise<ProductResponseInterface> {
       return await this.service.update( id,
                                         req.categoryId,
@@ -57,18 +79,23 @@ export class ProductController {
                                         req.status);
   }
 
-  @Delete(':id')
+  /** Soft Delete Product
+   *
+   * @param req
+   *
+   * @return boolean
+   */
+  @Delete('delete/:id')
   async delete(@Param() req: ProductDeleteRequest): Promise<boolean> {
     return await this.service.delete(req.id);
   }
 
-  @Get('get-all/soft-deleted')
+  /** Get All Soft-Delete-Product
+   *
+   * @return ProductResponseInterface[]
+   */
+  @Get('get-all-soft-delete')
   async getAllSoftDelete(): Promise<ProductResponseInterface[]> {
     return await this.service.getAllSoftDelete();
-  }
-
-  @Get('create/real-dummy-data')
-  async realDummyData() {
-    return await this.service.realDummyData();
   }
 }
