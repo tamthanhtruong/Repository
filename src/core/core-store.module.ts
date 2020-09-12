@@ -17,11 +17,8 @@ import { UnitProductController } from './unit-product/unit-product.controller';
 import { UserController } from './user/user.controller';
 import { RoleController } from './user/role/role.controller';
 import { ImportController } from './import/import.controller';
-import { DetailImportController } from './import/detail-import/detail-import.controller';
 import { ExportController } from './export/export.controller';
-import { DetailExportController } from './export/detail-export/detail-export.controller';
 import { InventoryController } from './inventory/inventory.controller';
-import { DetailInventoryController } from './inventory/detail-inventory/detail-inventory.controller';
 import { ProductService } from './product/product.service';
 import { CategoryService } from './product/category/category.service';
 import { UnitProductService } from './unit-product/unit-product.service';
@@ -66,11 +63,8 @@ import { IdDetailInventoryExist } from '../validators/detail-inventory.validator
     UserController,
     RoleController,
     ImportController,
-    DetailImportController,
     ExportController,
-    DetailExportController,
     InventoryController,
-    DetailInventoryController,
   ],
   providers: [
     ProductService,
