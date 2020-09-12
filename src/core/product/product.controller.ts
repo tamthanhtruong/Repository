@@ -48,6 +48,24 @@ export class ProductController {
     return await this.service.getAll();
   }
 
+  /** Get All Exist Product
+   *
+   * @return ProductResponseInterface[]
+   */
+  @Get('get-all-exist')
+  async getAllExist(): Promise<ProductResponseInterface[]> {
+    return await this.service.getAllExist();
+  }
+
+  /** Get All No_exist Product
+   *
+   * @return ProductResponseInterface[]
+   */
+  @Get('get-all-no_exist')
+  async getAllNoExist(): Promise<ProductResponseInterface[]> {
+    return await this.service.getAllNoExist();
+  }
+
   /** Get Single Product
    *
    * @param req

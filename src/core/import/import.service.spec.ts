@@ -38,6 +38,8 @@ const importDataDeleted = {  _id: '5f395933c024f51f14900d32',
                             deletedAt : 1597897148693
 };
 
+const resultArray = [importData];
+
 describe('Import Service', () => {
 
   let importService: ImportService;
@@ -73,9 +75,28 @@ describe('Import Service', () => {
     });
 
     it('Get All Import', async () => {
-      const result = [importData];
-      jest.spyOn(importService, 'getAll').mockResolvedValue(result);
-      expect(await importService.getAll()).toStrictEqual(result);
+      jest.spyOn(importService, 'getAll').mockResolvedValue(resultArray);
+      expect(await importService.getAll()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Lock Import', async () => {
+      jest.spyOn(importService, 'getAllLock').mockResolvedValue(resultArray);
+      expect(await importService.getAllLock()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Open Import', async () => {
+      jest.spyOn(importService, 'getAllOpen').mockResolvedValue(resultArray);
+      expect(await importService.getAllOpen()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Paid Import', async () => {
+      jest.spyOn(importService, 'getAllPaid').mockResolvedValue(resultArray);
+      expect(await importService.getAllPaid()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Imported Import', async () => {
+      jest.spyOn(importService, 'getAllImported').mockResolvedValue(resultArray);
+      expect(await importService.getAllImported()).toStrictEqual(resultArray);
     });
 
     it('Get Single Import', async () => {

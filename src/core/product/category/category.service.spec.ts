@@ -11,13 +11,16 @@ const categoryData = { _id: '5f3a2bcb965c4f2078970095',
                       __v : 0
 };
 const categoryDataDeleted = { _id: '5f3a2bcb965c4f2078970095',
-                              status:'Exist',
+                              status:'No_exist',
                               name : 'Máy giặt',
                               createAt : 1597897148693,
                               updatedAt : 1597897148693,
                               __v : 0,
                               deletedAt: 1597897148693
 };
+
+const resultArray = [categoryData];
+
 
 describe('Category Service', () => {
 
@@ -45,9 +48,18 @@ describe('Category Service', () => {
     });
 
     it('Get All Category', async () => {
-      const result = [categoryData];
-      jest.spyOn(categoryService, 'getAll').mockResolvedValue(result);
-      expect(await categoryService.getAll()).toStrictEqual(result);
+      jest.spyOn(categoryService, 'getAll').mockResolvedValue(resultArray);
+      expect(await categoryService.getAll()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Exist Category', async () => {
+      jest.spyOn(categoryService, 'getAllExist').mockResolvedValue(resultArray);
+      expect(await categoryService.getAllExist()).toStrictEqual(resultArray);
+    });
+
+    it('Get All No_exist Category', async () => {
+      jest.spyOn(categoryService, 'getAllNoExist').mockResolvedValue(resultArray);
+      expect(await categoryService.getAllNoExist()).toStrictEqual(resultArray);
     });
 
     it('Get Single Category', async () => {

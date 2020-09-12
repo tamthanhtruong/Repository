@@ -9,7 +9,7 @@ import { CategoryResponseInterface } from '../../../interface/product/category/c
 
 @Controller('category')
 export class CategoryController {
-  constructor(private readonly service: CategoryService) {}
+  constructor( private readonly service: CategoryService ) {}
 
   /** Create Category
    *
@@ -29,6 +29,24 @@ export class CategoryController {
   @Get('get-all')
   async getAll(): Promise<CategoryResponseInterface[]> {
     return await this.service.getAll();
+  }
+
+  /** Get All Exist Category
+   *
+   * @return CategoryResponseInterface[]
+   */
+  @Get('get-all-exist')
+  async getAllExist(): Promise<CategoryResponseInterface[]> {
+    return await this.service.getAllExist();
+  }
+
+  /** Get All No_exist Category
+   *
+   * @return CategoryResponseInterface[]
+   */
+  @Get('get-all-no_exist')
+  async getAllNoExist(): Promise<CategoryResponseInterface[]> {
+    return await this.service.getAllNoExist();
   }
 
   /** Get Single Category

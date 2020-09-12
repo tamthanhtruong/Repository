@@ -10,6 +10,7 @@ import { RoleResponseInterface } from '../../../interface/user/role/role.respons
 
 @Controller('role')
 export class RoleController {
+
   constructor(private readonly service: RoleService) {}
 
   /** Create Role
@@ -30,6 +31,24 @@ export class RoleController {
   @Get('get-all')
   async getAll(): Promise<RoleResponseInterface[]> {
     return await this.service.getAll();
+  }
+
+  /** Get All Active Role
+   *
+   * @return RoleResponseInterface[]
+   */
+  @Get('get-all-active')
+  async getAllActive(): Promise<RoleResponseInterface[]> {
+    return await this.service.getAllActive();
+  }
+
+  /** Get All Inactive Role
+   *
+   * @return RoleResponseInterface[]
+   */
+  @Get('get-all-inactive')
+  async getAllInactive(): Promise<RoleResponseInterface[]> {
+    return await this.service.getAllInactive();
   }
 
   /** Get Single Role

@@ -21,6 +21,8 @@ const roleDataDeleted = { _id: '5f3953a5755024303410e0aa',
                           deletedAt: 1597897148693
 };
 
+const resultArray = [roleData];
+
 describe('Role Service', () => {
 
   let roleService: RoleService;
@@ -50,9 +52,18 @@ describe('Role Service', () => {
     });
 
     it('Get All Role', async () => {
-      const result = [roleData];
-      jest.spyOn(roleService, 'getAll').mockResolvedValue(result);
-      expect(await roleService.getAll()).toStrictEqual(result);
+      jest.spyOn(roleService, 'getAll').mockResolvedValue(resultArray);
+      expect(await roleService.getAll()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Active Role', async () => {
+      jest.spyOn(roleService, 'getAllActive').mockResolvedValue(resultArray);
+      expect(await roleService.getAllActive()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Inactive Role', async () => {
+      jest.spyOn(roleService, 'getAllInactive').mockResolvedValue(resultArray);
+      expect(await roleService.getAllInactive()).toStrictEqual(resultArray);
     });
 
     it('Get Single Role', async () => {

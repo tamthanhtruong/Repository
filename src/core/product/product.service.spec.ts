@@ -20,7 +20,7 @@ const productData = { _id: '5f3df9bce166ad13f0263293',
 };
 
 const productDataDeleted = { _id: '5f3df9bce166ad13f0263293',
-                            status : 'Exist',
+                            status : 'No_exist',
                             categoryId : '5f44db3529b56c11b081f528',
                             unitProductId : '5f44dbd029b56c11b081f547',
                             name : 'Hp',
@@ -35,6 +35,8 @@ const productDataDeleted = { _id: '5f3df9bce166ad13f0263293',
                             __v : 0,
                             deletedAt : 1597897148693
 };
+
+const resultArray = [productData];
 
 describe('Product Service', () => {
 
@@ -72,9 +74,18 @@ describe('Product Service', () => {
     });
 
     it('Get All Product', async () => {
-      const result = [productData];
-      jest.spyOn(productService, 'getAll').mockResolvedValue(result);
-      expect(await productService.getAll()).toStrictEqual(result);
+      jest.spyOn(productService, 'getAll').mockResolvedValue(resultArray);
+      expect(await productService.getAll()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Exist Product', async () => {
+      jest.spyOn(productService, 'getAllExist').mockResolvedValue(resultArray);
+      expect(await productService.getAllExist()).toStrictEqual(resultArray);
+    });
+
+    it('Get All No_exist Product', async () => {
+      jest.spyOn(productService, 'getAllNoExist').mockResolvedValue(resultArray);
+      expect(await productService.getAllNoExist()).toStrictEqual(resultArray);
     });
 
     it('Get Single Product', async () => {

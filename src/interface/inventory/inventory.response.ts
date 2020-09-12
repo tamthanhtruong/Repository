@@ -7,6 +7,5 @@ export interface InventoryResponseInterface {
   createdDate?: number;
   createdAt?:  number;
   updatedAt?: number;
-  status:  string;
   deletedAt?: number;
 }

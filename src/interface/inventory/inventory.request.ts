@@ -13,10 +13,6 @@ export class InventoryCreateRequest {
 
   @Validate(IdUserExist)
   createdUserId: string;
-
-  @IsString()
-  @IsNotEmpty()
-  status:  string;
 }
 export class InventoryGetSingleRequest {
   @Validate(IdInventoryExist)
@@ -34,10 +30,6 @@ export class InventoryUpdateRequest {
 
   @Validate(IdUserExist)
   createdUserId: string;
-
-  @IsString()
-  @IsNotEmpty()
-  status:  string;
 }
 
 export class InventoryDeleteRequest {

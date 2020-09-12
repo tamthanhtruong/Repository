@@ -41,6 +41,78 @@ export class UserController {
     return await this.service.getAll();
   }
 
+  /** Get All Active User
+   *
+   * @return UserResponseInterface[]
+   */
+  @Get('get-all-active')
+  async getAllActive(): Promise<UserResponseInterface[]> {
+    return await this.service.getAllActive();
+  }
+
+  /** Get All Inactive User
+   *
+   * @return UserResponseInterface[]
+   */
+  @Get('get-all-inactive')
+  async getAllInactive(): Promise<UserResponseInterface[]> {
+    return await this.service.getAllInactive();
+  }
+
+  /** Get All Male User
+   *
+   * @return UserResponseInterface[]
+   */
+  @Get('get-all-male')
+  async getAllMale(): Promise<UserResponseInterface[]> {
+    return await this.service.getAllMale();
+  }
+
+  /** Get All Female User
+   *
+   * @return UserResponseInterface[]
+   */
+  @Get('get-all-female')
+  async getAllFemale(): Promise<UserResponseInterface[]> {
+    return await this.service.getAllFemale();
+  }
+
+  /** Get All Male Active User
+   *
+   * @return UserResponseInterface[]
+   */
+  @Get('get-all-male-active')
+  async getAllMaleActive(): Promise<UserResponseInterface[]> {
+    return await this.service.getAllMaleActive();
+  }
+
+  /** Get All Female Active User
+   *
+   * @return UserResponseInterface[]
+   */
+  @Get('get-all-female-active')
+  async getAllFemaleActive(): Promise<UserResponseInterface[]> {
+    return await this.service.getAllFemaleActive();
+  }
+
+  /** Get All Male Inactive User
+   *
+   * @return UserResponseInterface[]
+   */
+  @Get('get-all-male-inactive')
+  async getAllMaleInactive(): Promise<UserResponseInterface[]> {
+    return await this.service.getAllMaleInactive();
+  }
+
+  /** Get All Female Inactive User
+   *
+   * @return UserResponseInterface[]
+   */
+  @Get('get-all-female-inactive')
+  async getAllFemaleInactive(): Promise<UserResponseInterface[]> {
+    return await this.service.getAllFemaleInactive();
+  }
+
   /** Get Single User
    *
    * @param req

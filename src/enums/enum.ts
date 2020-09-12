@@ -33,11 +33,5 @@ export enum ExportStatusEnum {
   LOCK ='Lock',
   OPEN = 'Open',
   PAID = 'Paid',
-  IMPORTED = 'Exported',
-}
-
-export enum InventoryStatusEnum {
-  LOCK ='Lock',
-  OPEN = 'Open',
-  CHECKED ='Checked'
+  EXPORTED = 'Exported',
 }

@@ -4,7 +4,6 @@ import { InventoryService } from './inventory.service';
 
 const timer = 30000;
 const inventoryData = { _id: '5f395933c024f51f14900d32',
-                        status : 'Open',
                         invoiceNumber : 3,
                         note : 'Dầu xả',
                         createdUserId : '5f1ac85894e6923b98a1bcab',
@@ -16,7 +15,6 @@ const inventoryData = { _id: '5f395933c024f51f14900d32',
 };
 
 const inventoryDataDeleted = {  _id: '5f395933c024f51f14900d32',
-                                status : 'Open',
                                 invoiceNumber : 3,
                                 note : 'Dầu xả',
                                 createdUserId : '5f1ac85894e6923b98a1bcab',
@@ -52,8 +50,7 @@ describe('Inventory Service', () => {
       jest.spyOn(inventoryService, 'create').mockImplementation(async () => inventoryData);
       expect(await inventoryService.create(3,
                                             'Dầu xả',
-                                            '5f1ac85894e6923b98a1bcab',
-                                            'Open')
+                                            '5f1ac85894e6923b98a1bcab')
       ).toBe(inventoryData);
     });
 
@@ -73,8 +70,7 @@ describe('Inventory Service', () => {
       expect(await inventoryService.update('5f395933c024f51f14900d32',
                                           3,
                                           'Dầu xả',
-                                          '5f1ac85894e6923b98a1bcab',
-                                          'Open')
+                                          '5f1ac85894e6923b98a1bcab' )
                                         ).toStrictEqual(inventoryData);
     });
 

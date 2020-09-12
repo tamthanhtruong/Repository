@@ -56,6 +56,8 @@ describe('Export Service', () => {
     exportService = moduleRef.get<ExportService>(ExportService);
   });
 
+  const resultArray = [exportData];
+
   describe(' Unit Test Export', () => {
 
     it('Create Export', async () => {
@@ -73,9 +75,28 @@ describe('Export Service', () => {
     });
 
     it('Get All Export', async () => {
-      const result = [exportData];
-      jest.spyOn(exportService, 'getAll').mockResolvedValue(result);
-      expect(await exportService.getAll()).toStrictEqual(result);
+      jest.spyOn(exportService, 'getAll').mockResolvedValue(resultArray);
+      expect(await exportService.getAll()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Lock Export', async () => {
+      jest.spyOn(exportService, 'getAllLock').mockResolvedValue(resultArray);
+      expect(await exportService.getAllLock()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Open Export', async () => {
+      jest.spyOn(exportService, 'getAllOpen').mockResolvedValue(resultArray);
+      expect(await exportService.getAllOpen()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Paid Export', async () => {
+      jest.spyOn(exportService, 'getAllPaid').mockResolvedValue(resultArray);
+      expect(await exportService.getAllPaid()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Exported Export', async () => {
+      jest.spyOn(exportService, 'getAllExported').mockResolvedValue(resultArray);
+      expect(await exportService.getAllExported()).toStrictEqual(resultArray);
     });
 
     it('Get Single Export', async () => {

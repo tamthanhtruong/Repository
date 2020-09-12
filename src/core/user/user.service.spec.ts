@@ -19,7 +19,7 @@ const userData = { _id: '5f4533fd033c61240427e8b2',
                   __v : 0
 };
 const userDataDeleted = { _id: '5f4533fd033c61240427e8b2',
-                          status:'Active',
+                          status:'Inactive',
                           roleId : '5f3953a5755024303410e0aa',
                           account : 'linh89',
                           password : '456',
@@ -34,6 +34,8 @@ const userDataDeleted = { _id: '5f4533fd033c61240427e8b2',
                           __v : 0,
                           deletedAt: 1597897148693
 };
+
+const resultArray = [userData];
 
 describe('User Service', () => {
 
@@ -71,9 +73,48 @@ describe('User Service', () => {
     });
 
     it('Get All User', async () => {
-      const result = [userData];
-      jest.spyOn(userService, 'getAll').mockResolvedValue(result);
-      expect(await userService.getAll()).toStrictEqual(result);
+      jest.spyOn(userService, 'getAll').mockResolvedValue(resultArray);
+      expect(await userService.getAll()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Active User', async () => {
+      jest.spyOn(userService, 'getAllActive').mockResolvedValue(resultArray);
+      expect(await userService.getAllActive()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Inactive User', async () => {
+      jest.spyOn(userService, 'getAllInactive').mockResolvedValue(resultArray);
+      expect(await userService.getAllInactive()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Male User', async () => {
+      jest.spyOn(userService, 'getAllMale').mockResolvedValue(resultArray);
+      expect(await userService.getAllMale()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Female User', async () => {
+      jest.spyOn(userService, 'getAllFemale').mockResolvedValue(resultArray);
+      expect(await userService.getAllFemale()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Male Active User', async () => {
+      jest.spyOn(userService, 'getAllMaleActive').mockResolvedValue(resultArray);
+      expect(await userService.getAllMaleActive()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Female Active User', async () => {
+      jest.spyOn(userService, 'getAllFemaleActive').mockResolvedValue(resultArray);
+      expect(await userService.getAllFemaleActive()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Male Inactive User', async () => {
+      jest.spyOn(userService, 'getAllMaleInactive').mockResolvedValue(resultArray);
+      expect(await userService.getAllMaleInactive()).toStrictEqual(resultArray);
+    });
+
+    it('Get All Female Inactive User', async () => {
+      jest.spyOn(userService, 'getAllFemaleInactive').mockResolvedValue(resultArray);
+      expect(await userService.getAllFemaleInactive()).toStrictEqual(resultArray);
     });
 
     it('Get Single User', async () => {
