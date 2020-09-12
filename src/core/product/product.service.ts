@@ -1,7 +1,7 @@
+import { GatewayTimeoutException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProductInterface } from './product.model';
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { ProductResponseInterface } from '../../interface/product/product.response';
 
 @Injectable()
@@ -41,7 +41,8 @@ export class ProductService {
       const newProduct = new this.model({categoryId, unitProductId, name, code, originPrice, price, image, information, evaluation, status});
       return await newProduct.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      // throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ProductService: create() Query Error.');
     }
   }
 
@@ -49,7 +50,23 @@ export class ProductService {
     try {
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ProductService: getAll() Query Error.');
+    }
+  }
+
+  async getAllExist(): Promise<ProductResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Exist' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('ProductService: getAllExist() Query Error.');
+    }
+  }
+
+  async getAllNoExist(): Promise<ProductResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'No_exist' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('ProductService: getAllNoExist() Query Error.');
     }
   }
 
@@ -81,7 +98,7 @@ export class ProductService {
 
       return await product.save();
     } catch (e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ProductService: update() Query Error.');
     }
   }
 
@@ -92,7 +109,7 @@ export class ProductService {
       await product.save();
       return true;
     } catch (e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ProductService: delete() Query Error.');
     }
   }
 
@@ -100,7 +117,7 @@ export class ProductService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch (e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ProductService: getAllSoftDelete() Query Error.');
     }
   }
 }

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { GatewayTimeoutException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { DetailExportInterface } from './detail-export.model';
@@ -36,7 +36,7 @@ export class DetailExportService {
       const newDetail = new this.model({exportId, productId, unitProductId, quantity, price});
       return await newDetail.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('DetailExportService: create() Query Error.');
     }
   }
 
@@ -44,7 +44,7 @@ export class DetailExportService {
     try {
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('DetailExportService: getAll() Query Error.');
     }
   }
 
@@ -59,7 +59,7 @@ export class DetailExportService {
       await detail.save();
       return true;
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('DetailExportService: delete() Query Error.');
     }
   }
 
@@ -67,7 +67,7 @@ export class DetailExportService {
     try {
       return await this.model.find({ exportId : exportId, deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('DetailExportService: getListExport() Query Error.');
     }
   }
 
@@ -75,7 +75,7 @@ export class DetailExportService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch (e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('DetailExportService: getAllSoftDelete() Query Error.');
     }
   }
 }

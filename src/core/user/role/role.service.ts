@@ -1,7 +1,7 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { GatewayTimeoutException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { RoleInterface } from './role.model';
 import { Model } from 'mongoose';
+import { RoleInterface } from './role.model';
 import { RoleResponseInterface } from '../../../interface/user/role/role.response';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class RoleService {
       const newRole = new this.model({name, description, status});
       return await newRole.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('RoleService: create() Query Error.');
     }
   }
 
@@ -39,7 +39,23 @@ export class RoleService {
     try {
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('RoleService: getAll() Query Error.');
+    }
+  }
+
+  async getAllActive(): Promise<RoleResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Active' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('RoleService: getAllActive() Query Error.');
+    }
+  }
+
+  async getAllInactive(): Promise<RoleResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Inactive' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('RoleService: getAllInactive() Query Error.');
     }
   }
 
@@ -57,7 +73,7 @@ export class RoleService {
 
       return await role.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('RoleService: update() Query Error.');
     }
   }
 
@@ -68,7 +84,7 @@ export class RoleService {
       await role.save();
       return true;
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('RoleService: delete() Query Error.');
     }
   }
 
@@ -76,7 +92,7 @@ export class RoleService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('RoleService: getAllSoftDelete() Query Error.');
     }
   }
 }

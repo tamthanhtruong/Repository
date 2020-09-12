@@ -1,7 +1,7 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { GatewayTimeoutException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { UnitProductInterface } from './unit-product.model';
 import { Model } from 'mongoose';
+import { UnitProductInterface } from './unit-product.model';
 import { UnitProductResponseInterface } from '../../interface/unit-product/unit-product.response';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class UnitProductService {
       const newUnit = new this.model({name});
       return await newUnit.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('UnitProductService: create() Query Error.');
     }
   }
 
@@ -39,7 +39,7 @@ export class UnitProductService {
     try {
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('UnitProductService: getAll() Query Error.');
     }
   }
 
@@ -54,7 +54,7 @@ export class UnitProductService {
       unitProduct.updatedAt = Date.now();
       return await unitProduct.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('UnitProductService: update() Query Error.');
     }
   }
 
@@ -65,7 +65,7 @@ export class UnitProductService {
       await unitProduct.save();
       return true;
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('UnitProductService: delete() Query Error.');
     }
   }
 
@@ -73,7 +73,7 @@ export class UnitProductService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch (e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('UnitProductService: getAllSoftDelete() Query Error.');
     }
   }
 }

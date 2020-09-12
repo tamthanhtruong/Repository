@@ -1,6 +1,6 @@
 import { ImportInterface } from './import.model';
 import { Model } from 'mongoose';
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { GatewayTimeoutException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ImportResponseInterface } from '../../interface/import/import.response';
 
@@ -40,7 +40,7 @@ export class ImportService {
       const newImport = new this.model({shipper,invoiceNumber,note,createdUserId,accountantUserId,accConfirmedDate,stockKeeperUserId,stockConfirmedDate,status});
       return await newImport.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ImportService: create() Query Error.');
     }
   }
 
@@ -48,7 +48,39 @@ export class ImportService {
     try {
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ImportService: getAll() Query Error.');
+    }
+  }
+
+  async getAllLock(): Promise<ImportResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Lock' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('ImportService: getAllLock() Query Error.');
+    }
+  }
+
+  async getAllOpen(): Promise<ImportResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Open' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('ImportService: getAllOpen() Query Error.');
+    }
+  }
+
+  async getAllPaid(): Promise<ImportResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Paid' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('ImportService: getAllPaid() Query Error.');
+    }
+  }
+
+  async getAllImported(): Promise<ImportResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Imported' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('ImportService: getAllImported() Query Error.');
     }
   }
 
@@ -82,7 +114,7 @@ export class ImportService {
 
       return await importDoc.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ImportService: update() Query Error.');
     }
   }
 
@@ -93,7 +125,7 @@ export class ImportService {
       await importDoc.save();
       return true;
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ImportService: delete() Query Error.');
     }
   }
 
@@ -101,7 +133,7 @@ export class ImportService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch (e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ImportService: getAllSoftDelete() Query Error.');
     }
   }
 }

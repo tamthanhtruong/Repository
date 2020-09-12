@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { GatewayTimeoutException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from "mongoose";
 import { ExportResponseInterface } from '../../interface/export/export.response';
@@ -40,7 +40,7 @@ export class ExportService {
       const newExport = new this.model({receiver,invoiceNumber,note,createdUserId,accountantUserId,accConfirmedDate,stockKeeperUserId,stockConfirmedDate,status});
       return await newExport.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ExportService: create() Query Error.');
     }
   }
 
@@ -48,7 +48,39 @@ export class ExportService {
     try {
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ExportService: getAll() Query Error.');
+    }
+  }
+
+  async getAllLock(): Promise<ExportResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Lock' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('ExportService: getAllLock() Query Error.');
+    }
+  }
+
+  async getAllOpen(): Promise<ExportResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Open' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('ExportService: getAllOpen() Query Error.');
+    }
+  }
+
+  async getAllPaid(): Promise<ExportResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Paid' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('ExportService: getAllPaid() Query Error.');
+    }
+  }
+
+  async getAllExported(): Promise<ExportResponseInterface[]> {
+    try {
+      return await this.model.find({ status: 'Exported' }).exec();
+    } catch(e) {
+      throw new GatewayTimeoutException('ExportService: getAllExported() Query Error.');
     }
   }
 
@@ -82,7 +114,7 @@ export class ExportService {
 
       return await exportDoc.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ExportService: update() Query Error.');
     }
   }
 
@@ -93,7 +125,7 @@ export class ExportService {
       await exportDoc.save();
       return true;
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ExportService: delete() Query Error.');
     }
   }
 
@@ -101,7 +133,7 @@ export class ExportService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch (e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('ExportService: getAllSoftDelete() Query Error.');
     }
   }
 }

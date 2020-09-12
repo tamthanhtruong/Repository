@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { GatewayTimeoutException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from "mongoose";
 import { InventoryInterface } from './inventory.model';
@@ -28,13 +28,12 @@ export class InventoryService {
   /* Main functions */
   async create( invoiceNumber: number,
                 note: string,
-                createdUserId: string,
-                status: string ): Promise<InventoryResponseInterface> {
+                createdUserId: string ): Promise<InventoryResponseInterface> {
     try {
-      const newInventory = new this.model({invoiceNumber,note,createdUserId,status});
+      const newInventory = new this.model({invoiceNumber,note,createdUserId});
       return await newInventory.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('InventoryService: create() Query Error.');
     }
   }
 
@@ -42,7 +41,7 @@ export class InventoryService {
     try {
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('InventoryService: getAll() Query Error.');
     }
   }
 
@@ -53,20 +52,18 @@ export class InventoryService {
   async update(  id: string,
                  invoiceNumber: number,
                  note: string,
-                 createdUserId: string,
-                 status: string ): Promise<InventoryResponseInterface> {
+                 createdUserId: string ): Promise<InventoryResponseInterface> {
 
     const findInventory = await this.findInventory(id);
     try {
       findInventory.invoiceNumber = invoiceNumber;
       findInventory.note = note;
       findInventory.createdUserId = createdUserId;
-      findInventory.status = status;
       findInventory.updatedAt = Date.now();
 
       return await findInventory.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('InventoryService: update() Query Error.');
     }
   }
 
@@ -77,7 +74,7 @@ export class InventoryService {
       await findInventory.save();
       return true;
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('InventoryService: delete() Query Error.');
     }
   }
 
@@ -85,7 +82,7 @@ export class InventoryService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch (e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('InventoryService: getAllSoftDelete() Query Error.');
     }
   }
 }

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { GatewayTimeoutException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { DetailInventoryInterface } from './detail-inventory.model';
@@ -36,7 +36,7 @@ export class DetailInventoryService {
       const newDetail = new this.model({inventoryId, productId, unitProductId, quantity, price});
       return await newDetail.save();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('DetailInventoryService: create() Query Error.');
     }
   }
 
@@ -44,7 +44,7 @@ export class DetailInventoryService {
     try {
       return await this.model.find({ deletedAt: null }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('DetailInventoryService: getAll() Query Error.');
     }
   }
 
@@ -59,7 +59,7 @@ export class DetailInventoryService {
       await detail.save();
       return true;
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('DetailInventoryService: delete() Query Error.');
     }
   }
 
@@ -67,7 +67,7 @@ export class DetailInventoryService {
     try {
       return await this.model.find({ inventoryId : inventoryId, deletedAt: null  }).exec();
     } catch(e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('DetailInventoryService: getListInventory() Query Error.');
     }
   }
 
@@ -75,7 +75,7 @@ export class DetailInventoryService {
     try {
       return await this.model.find({ deletedAt : { $ne: null } }).exec();
     } catch (e) {
-      throw new HttpException('Server Error.',HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new GatewayTimeoutException('DetailInventoryService: getAllSoftDelete() Query Error.');
     }
   }
 }
